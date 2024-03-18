@@ -1,0 +1,64 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		// 默认配置界面
+		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/home/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/issue/index",
+			"style": {
+				"navigationBarTitleText": "发布"
+			}
+		},
+		{
+			"path": "pages/profile/index",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		}
+	],
+	"tabBar": {
+		"borderStyle": "white",
+		"color": "#333333",
+		"selectedColor": "#27c7db",
+		"backgroundColor": "#222222",
+		"fontSize": "16px",
+		"list": [
+			{
+				"pagePath": "pages/home/index",
+				"iconPath": "static/images/tabbar/home.png",
+				"selectedIconPath": "static/images/tabbar/home_active.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/issue/index",
+				"iconPath": "static/images/tabbar/issue.png",
+				"selectedIconPath": "static/images/tabbar/issue_active.png",
+				"text": "发布"
+			},
+			{
+				"pagePath": "pages/profile/index",
+				"iconPath": "static/images/tabbar/profile.png",
+				"selectedIconPath": "static/images/tabbar/profile_active.png",
+				"text": "我的"
+			}
+		]
+	},
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"uniIdRouter": {}
+}
