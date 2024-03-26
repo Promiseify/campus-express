@@ -1,7 +1,7 @@
 // global
 @import './global.scss';
 // colorui
-@import 'static/style/colorui.css';
+@import 'static/css/colorui.css';
 // 使用外部引用的图标库
 @import "@/static/font/iconfont.css";
 
@@ -14,7 +14,6 @@ page {
 	font-family: OPPOSANS;
 	word-break: break-all; //英文文本不换行
 	white-space: normal;
-	color: $u-main-color;
 }
 ::-webkit-scrollbar {
 	width: 0;

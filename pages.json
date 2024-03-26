@@ -1,15 +1,24 @@
 {
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		// 默认配置界面
 		{
 			"path": "pages/login/index",
 			"style": {
-				"navigationBarTitleText": "登录",
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "登录"
 			}
 		},
 		{
-			"path": "pages/home/index",
+			"path": "pages/login/register/index",
+			"style": {
+				"navigationBarTitleText": "注册",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页"
 			}
@@ -23,7 +32,36 @@
 		{
 			"path": "pages/profile/index",
 			"style": {
-				"navigationBarTitleText": "我的"
+				"navigationBarTitleText": "我的",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/profile/updatePhone",
+			"style": {
+				"navigationBarTitleText": "修改手机",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/profile/updateEmail",
+			"style": {
+				"navigationBarTitleText": "修改邮箱",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/profile/updateUserName",
+			"style": {
+				"navigationBarTitleText": "修改姓名",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/home/home",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"enablePullDownRefresh": false
 			}
 		}
 	],
@@ -35,7 +73,7 @@
 		"fontSize": "16px",
 		"list": [
 			{
-				"pagePath": "pages/home/index",
+				"pagePath": "pages/index/index",
 				"iconPath": "static/images/tabbar/home.png",
 				"selectedIconPath": "static/images/tabbar/home_active.png",
 				"text": "首页"
@@ -55,9 +93,9 @@
 		]
 	},
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "校园跑腿",
+		"navigationBarBackgroundColor": "#0081ff",
 		"backgroundColor": "#F8F8F8"
 	},
 	"uniIdRouter": {}
