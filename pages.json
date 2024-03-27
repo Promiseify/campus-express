@@ -30,71 +30,122 @@
 			}
 		},
 		{
-			"path": "pages/profile/index",
+			"path": "pages/home/index",
 			"style": {
 				"navigationBarTitleText": "我的",
 				"enablePullDownRefresh": false
 			}
 		},
 		{
-			"path": "pages/profile/updatePhone",
+			"path": "pages/home/moment/moment",
+			"style": {
+				"navigationBarTitleText": "朋友圈",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"type": "none",
+								"fontSize": "32upx",
+								"text": "发表",
+								"float": "right"
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/home/moment/momentAdd/momentAdd",
+			"style": {
+				"navigationBarTitleText": "发表心情",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"type": "none",
+								"fontSize": "32upx",
+								"text": "发表",
+								"float": "right"
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/profile/index",
+			"style": {
+				"navigationBarTitleText": "个人信息",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/profile/update/updatePhone",
 			"style": {
 				"navigationBarTitleText": "修改手机",
 				"enablePullDownRefresh": false
 			}
 		},
 		{
-			"path": "pages/profile/updateEmail",
+			"path": "pages/profile/update/updateEmail",
 			"style": {
 				"navigationBarTitleText": "修改邮箱",
 				"enablePullDownRefresh": false
 			}
 		},
 		{
-			"path": "pages/profile/updateUserName",
+			"path": "pages/profile/update/updateUserName",
 			"style": {
 				"navigationBarTitleText": "修改姓名",
 				"enablePullDownRefresh": false
 			}
 		},
 		{
-			"path": "pages/home/home",
+			"path": "pages/profile/update/updatePassword",
 			"style": {
-				"navigationBarTitleText": "个人中心",
+				"navigationBarTitleText": "修改密码",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/profile/update/updateAvatar",
+			"style": {
+				"navigationBarTitleText": "修改头像",
 				"enablePullDownRefresh": false
 			}
 		}
 	],
 	"tabBar": {
-		"borderStyle": "white",
-		"color": "#333333",
-		"selectedColor": "#27c7db",
-		"backgroundColor": "#222222",
+		"borderStyle": "black",
+		"color": "#000000",
+		"selectedColor": "#0081FF",
+		"backgroundColor": "#FFFFFF",
 		"fontSize": "16px",
 		"list": [
 			{
 				"pagePath": "pages/index/index",
-				"iconPath": "static/images/tabbar/home.png",
-				"selectedIconPath": "static/images/tabbar/home_active.png",
+				"iconPath": "static/images/tabbar/index.png",
+				"selectedIconPath": "static/images/tabbar/index_active.png",
 				"text": "首页"
 			},
+			// {
+			// 	"pagePath": "pages/issue/index",
+			// 	"iconPath": "static/images/tabbar/issue.png",
+			// 	"selectedIconPath": "static/images/tabbar/issue_active.png",
+			// 	"text": "发布"
+			// },
 			{
-				"pagePath": "pages/issue/index",
-				"iconPath": "static/images/tabbar/issue.png",
-				"selectedIconPath": "static/images/tabbar/issue_active.png",
-				"text": "发布"
-			},
-			{
-				"pagePath": "pages/profile/index",
-				"iconPath": "static/images/tabbar/profile.png",
-				"selectedIconPath": "static/images/tabbar/profile_active.png",
+				"pagePath": "pages/home/index",
+				"iconPath": "static/images/tabbar/home.png",
+				"selectedIconPath": "static/images/tabbar/home_active.png",
 				"text": "我的"
 			}
 		]
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
-		"navigationBarTitleText": "校园跑腿",
+		"navigationBarTitleText": "足不出户",
 		"navigationBarBackgroundColor": "#0081ff",
 		"backgroundColor": "#F8F8F8"
 	},
