@@ -6,90 +6,75 @@
     <uni-form ref="form" :modalValue="queryParams">
       <view class="cu-form-group margin-top">
         <view class="title">账户</view>
-        <input placeholder="请输入用户名" v-model="username"></input>
+        <input placeholder="请输入用户名" v-model="queryParams.username"></input>
       </view>
       <view class="cu-form-group">
         <view class="title">密码</view>
-        <input placeholder="请输入密码" v-model="password" type="password"></input>
+        <input placeholder="请输入密码" v-model="queryParams.password" type="password"></input>
       </view>
       <view class="cu-form-group">
         <view class="title">身份</view>
-        <picker @change="pickerRole" :range="roleList" range-key="name">
-          <view class="picker">{{ roleName }}</view>
+        <picker @change="handlePickerRole" :range="roleList" range-key="name">
+          <view class="picker">{{ queryParams.role }}</view>
         </picker>
       </view>
 
       <view class="padding flex flex-direction" @tap="handleLogin()">
         <button class="cu-btn bg-blue margin-tb-sm lg">登录</button>
       </view>
-      <button class="cu-btn margin-tb-sm" @tap="toregister()">没有账号注册一个</button>
+      <button class="cu-btn margin-tb-sm" @tap="handleRegister()">没有账号注册一个</button>
     </uni-form>
 
   </view>
 </template>
 
 <script>
+import { login } from "@/api/module/auth"
+
 export default {
   data() {
     return {
       queryParams: {
-        username: undefined,
-        password: undefined,
-        role: undefined
+        username: '',
+        password: '',
+        roleId: 1,
+        role: '用户',
       },
-      windowHeight: "200px",
-      msg: '',
-      username: '',
-      password: '',
-      roleName: '用户',
-      roleId: '116',
       roleList: [
-        { id: 116, name: '用户' },
-        { id: 117, name: '跑腿员' }
-      ],
-      bgurl: ''
+        { id: 1, name: '用户' },
+        { id: 2, name: '代取员' }
+      ]
     }
   },
   methods: {
-    toregister() {
-      uni.navigateTo({
-        url: 'register/index'
-      })
+    handleRegister() {
+      this.$tab.navigateTo("register/index")
     },
     // 选择状态
-    pickerRole(e) {
+    handlePickerRole(e) {
       var index = e.detail.value
-      this.roleId = this.roleList[index].id
-      this.roleName = this.roleList[index].name
+      this.queryParams.roleId = this.roleList[index].id
+      this.queryParams.role = this.roleList[index].name
     },
-    handleLogin: function () {
-      // var that = this
-      if (this.username.length == 0 || this.password.length == 0) {
-        this.vusui.alert('请输入用户名和密码')
+    handleLogin() {
+      if (this.queryParams.username.length == 0 || this.queryParams.password.length == 0) {
+        this.$modal.showToast('请输入用户名和密码')
         return false;
       }
-      // this.http.post('/openapi/system/loginNocode', {
-      //   username: this.username,
-      //   password: this.password,
-      //   roleId: this.roleId
-      // }).then((res) => {
 
-      //   if (res.code != 0) {
-      //     this.vusui.alert(res.msg)
-      //     return false;
+      // TODO
+      this.$tab.switchTab("/pages/index/index")
+      // login(this.queryParams).then(res => {
+      //   if (res.code == 200) {
+      //     //登陆成功后获取用户信息，放入storage
+      //     uni.setStroage({
+      //       key: 'userInfo',
+      //       data: JSON.stringify(res.data),
+      //       success: function () {
+      //         this.$tab.switchTab("index/index")
+      //       }
+      //     })
       //   }
-      //   //登陆成功后获取用户信息，放入storage
-      //   uni.setStorageSync('token', res.data.userId)
-      //   uni.setStorageSync('userId', res.data.userId)
-      //   uni.setStorageSync('roleId', that.roleId)
-      //   uni.setStorageSync('deptId', res.data.dept.deptId)
-      //   uni.setStorageSync('deptName', res.data.dept.deptName)
-      //   uni.setStorageSync('userName', res.data.userName)
-      //   uni.setStorageSync('phonenumber', res.data.phonenumber)
-      //   uni.setStorageSync('avatar', res.data.avatar)
-      //   uni.switchTab({
-      //     url: "../index/index"
-      //   })
       // })
     }
   }

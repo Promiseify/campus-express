@@ -1,4 +1,4 @@
-import { API_URL, TIME_OUT } from "@/service/config"
+import { API_URL, TIME_OUT } from "@/api/config"
 
 let timeout = TIME_OUT
 
@@ -19,8 +19,8 @@ const request = config => {
       header: config.header,
       dataType: 'json'
     }).then(res => {
-      let [error, res] = res
-      if (error) {
+      // let [error, res] = res
+      if (res.error) {
         uni.showToast({ title: '后端接口连接异常!' })
         reject('后端接口连接异常!')
         return;
