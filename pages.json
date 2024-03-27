@@ -114,6 +114,49 @@
 				"navigationBarTitleText": "修改头像",
 				"enablePullDownRefresh": false
 			}
+		},
+		// 快递相关
+		{
+			"path": "pages/parcel/userAdd/userAdd",
+			"style": {
+				"navigationBarTitleText": "新增快递订单",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/parcel/todoList/todoList",
+			"style": {
+				"navigationBarTitleText": "快递待接单",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/parcel/detailSimple/detailSimple",
+			"style": {
+				"navigationBarTitleText": "快递详情",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/parcel/mystartList/mystartList",
+			"style": {
+				"navigationBarTitleText": "我的快递订单",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/parcel/mytaskList/mytaskList",
+			"style": {
+				"navigationBarTitleText": "我的快递接单",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/parcel/detailComplex/detailComplex",
+			"style": {
+				"navigationBarTitleText": "快递订单详情",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"tabBar": {
