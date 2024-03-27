@@ -115,6 +115,20 @@
 				"enablePullDownRefresh": false
 			}
 		},
+		{
+			"path": "pages/profile/wallet/expend",
+			"style": {
+				"navigationBarTitleText": "消费流水",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/profile/wallet/income",
+			"style": {
+				"navigationBarTitleText": "收入流水",
+				"enablePullDownRefresh": false
+			}
+		},
 		// 快递相关
 		{
 			"path": "pages/parcel/userAdd/userAdd",
@@ -137,6 +151,7 @@
 				"enablePullDownRefresh": false
 			}
 		},
+		// 用户
 		{
 			"path": "pages/parcel/mystartList/mystartList",
 			"style": {
@@ -144,6 +159,7 @@
 				"enablePullDownRefresh": false
 			}
 		},
+		// 外卖员
 		{
 			"path": "pages/parcel/mytaskList/mytaskList",
 			"style": {
@@ -151,10 +167,27 @@
 				"enablePullDownRefresh": false
 			}
 		},
+		// 用户
 		{
 			"path": "pages/parcel/detailComplex/detailComplex",
 			"style": {
 				"navigationBarTitleText": "快递订单详情",
+				"enablePullDownRefresh": false
+			}
+		},
+		// 外卖
+		{
+			"path": "pages/food/todoList/todoList",
+			"style": {
+				"navigationBarTitleText": "外卖待接单",
+				"enablePullDownRefresh": false
+			}
+		},
+		// 其他
+		{
+			"path": "pages/other/todoList/todoList",
+			"style": {
+				"navigationBarTitleText": "其他待接单",
 				"enablePullDownRefresh": false
 			}
 		}

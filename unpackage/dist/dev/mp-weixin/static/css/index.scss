@@ -1,0 +1,25 @@
+// global
+@import './global.scss';
+// colorui
+@import 'static/css/colorui.css';
+@import 'static/css/icon.css';
+@import 'static/css/animation.css';
+// 使用外部引用的图标库
+@import "@/static/font/iconfont.css";
+
+page {
+	-webkit-overflow-scrolling: touch; // ios滑动不流畅
+	height: 100%;
+	background: #f6f6f6;
+	width: 100%;
+	font-size: 28rpx;
+	font-family: OPPOSANS;
+	word-break: break-all; //英文文本不换行
+	white-space: normal;
+}
+::-webkit-scrollbar {
+	width: 0;
+	height: 0;
+	color: transparent;
+	display: none;
+}

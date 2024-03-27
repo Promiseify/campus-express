@@ -1,0 +1,242 @@
+@font-face {
+  font-family: "custom-icon"; /* Project id 4309597 */
+  src: url('@/static/font/iconfont.woff2?t=1698734154567') format('woff2'),
+       url('@/static/font/iconfont.woff?t=1698734154567') format('woff'),
+       url('@/static/font/iconfont.ttf?t=1698734154567') format('truetype');
+}
+
+@font-face {
+  font-family: "iconfont";
+  src: url('@/static/font/iconfont2.ttf') format('truetype');
+}
+
+.custom-icon {
+  font-family: "custom-icon" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.custom-icon- {
+  font-family: "custom-icon" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.custom-icon-safe:before {
+  content: "\e614";
+}
+
+.custom-icon-delete:before {
+  content: "\e601";
+}
+
+.custom-icon-break:before {
+  content: "\e602";
+}
+
+.custom-icon-eye:before {
+  content: "\e603";
+}
+
+.custom-icon-content:before {
+  content: "\e604";
+}
+
+.custom-icon-edit:before {
+  content: "\e605";
+}
+
+.custom-icon-liked-fill:before {
+  content: "\e606";
+}
+
+.custom-icon-lightning:before {
+  content: "\e607";
+}
+
+.custom-icon-chat-white:before {
+  content: "\e608";
+}
+
+.custom-icon-like:before {
+  content: "\e609";
+}
+
+.custom-icon-light:before {
+  content: "\e60a";
+}
+
+.custom-icon-new-chat:before {
+  content: "\e60b";
+}
+
+.custom-icon-eye-off:before {
+  content: "\e60c";
+}
+
+.custom-icon-delete2:before {
+  content: "\e60d";
+}
+
+.custom-icon-keyboard:before {
+  content: "\e60e";
+}
+
+.custom-icon-export:before {
+  content: "\e60f";
+}
+
+.custom-icon-chat-settings:before {
+  content: "\e610";
+}
+
+.custom-icon-language:before {
+  content: "\e611";
+}
+
+.custom-icon-remove:before {
+  content: "\e612";
+}
+
+.custom-icon-plus:before {
+  content: "\e613";
+}
+
+.custom-icon-point:before {
+  content: "\e615";
+}
+
+.custom-icon-like-primary:before {
+  content: "\e616";
+}
+
+.custom-icon-liked:before {
+  content: "\e617";
+}
+
+.custom-icon-plus-circle:before {
+  content: "\e618";
+}
+
+.custom-icon-time:before {
+  content: "\e619";
+}
+
+.custom-icon-stop:before {
+  content: "\e61a";
+}
+
+.custom-icon-new-edit:before {
+  content: "\e61b";
+}
+
+.custom-icon-voice:before {
+  content: "\e61c";
+}
+
+.custom-icon-new-role:before {
+  content: "\e61d";
+}
+
+.custom-icon-send2:before {
+  content: "\e61e";
+}
+
+.custom-icon-upload:before {
+  content: "\e61f";
+}
+
+.custom-icon-plugin:before {
+  content: "\e620";
+}
+
+
+/* 第二种字体 */
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  display: inline-block;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-user:before {
+  content: "\e7ae";
+}
+
+.icon-password:before {
+  content: "\e8b2";
+}
+
+.icon-code:before {
+  content: "\e699";
+}
+
+.icon-setting:before {
+  content: "\e6cc";
+}
+
+.icon-share:before {
+  content: "\e739";
+}
+
+.icon-edit:before {
+  content: "\e60c";
+}
+
+.icon-version:before {
+  content: "\e63f";
+}
+
+.icon-service:before {
+  content: "\e6ff";
+}
+
+.icon-friendfill:before {
+  content: "\e726";
+}
+
+.icon-community:before {
+  content: "\e741";
+}
+
+.icon-people:before {
+  content: "\e736";
+}
+
+.icon-dianzan:before {
+  content: "\ec7f";
+}
+
+.icon-right:before {
+  content: "\e7eb";
+}
+
+.icon-logout:before {
+  content: "\e61d";
+}
+
+.icon-help:before {
+  content: "\e616";
+}
+
+.icon-github:before {
+  content: "\e628";
+}
+
+.icon-aixin:before {
+  content: "\e601";
+}
+
+.icon-clean:before {
+  content: "\e607";
+}
+
+.icon-refresh:before {
+  content: "\e604";
+}

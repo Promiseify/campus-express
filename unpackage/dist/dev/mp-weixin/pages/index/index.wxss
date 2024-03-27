@@ -1,0 +1,48 @@
+.avator.data-v-57280228 {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: absolute;
+  left: 10px;
+}
+.banner.data-v-57280228 {
+  height: 360rpx;
+  overflow: hidden;
+  position: relative;
+  background-color: #ccc;
+}
+.banner-img.data-v-57280228 {
+  width: 100%;
+}
+.banner-title.data-v-57280228 {
+  max-height: 84rpx;
+  overflow: hidden;
+  position: absolute;
+  left: 30rpx;
+  bottom: 30rpx;
+  width: 90%;
+  font-size: 32rpx;
+  font-weight: 400;
+  line-height: 42rpx;
+  color: white;
+  z-index: 11;
+}
+.uni-media-list-logo.data-v-57280228 {
+  width: 180rpx;
+  height: 140rpx;
+}
+.uni-media-list-body.data-v-57280228 {
+  height: auto;
+  justify-content: space-around;
+}
+.uni-media-list-text-top.data-v-57280228 {
+  height: 74rpx;
+  font-size: 28rpx;
+  overflow: hidden;
+}
+.uni-media-list-text-bottom.data-v-57280228 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+

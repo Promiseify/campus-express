@@ -85,9 +85,9 @@ export default {
 .banner {
   height: 400upx;
   overflow: hidden;
+}
 
-  img {
-    width: 100%;
-  }
+img {
+  width: 100%;
 }
 </style>

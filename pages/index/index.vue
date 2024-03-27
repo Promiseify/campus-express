@@ -206,7 +206,7 @@ export default {
     // 跑腿员- 进入外卖所有待接单列表界面
     toFoodTask() {
       uni.navigateTo({
-        url: '../taskfood/todoList/todoList'
+        url: '../food/todoList/todoList'
       })
     },
     // 跑腿员- 进入快递所有待接单列表界面
@@ -218,7 +218,7 @@ export default {
     // 跑腿员- 进入其他所有待接单列表界面
     toOtherTask() {
       uni.navigateTo({
-        url: '../taskother/todoList/todoList'
+        url: '../other/todoList/todoList'
       })
     }
 

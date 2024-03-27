@@ -48,6 +48,9 @@
 					<view class="title">跑腿价格</view>
 					<input v-model="obj.money"></input>
 				</view>
+				<view class="padding flex flex-direction">
+					<button @click="handleReceive" class="cu-btn bg-blue margin-tb-sm lg">接 取</button>
+				</view>
 			</form>
 
 		</view>
@@ -96,6 +99,9 @@ export default {
 				}
 				this.obj = res.data
 			})
+		},
+		handleReceive() {
+			this.$modal.showToast("接取成功，请按照规定时间送达！")
 		}
 	}
 }

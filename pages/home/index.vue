@@ -104,10 +104,12 @@ export default {
 		// 用户流水
 		toLsUser() {
 			console.log('消费流水');
+			this.$tab.navigateTo("../profile/wallet/expend")
 		},
 		// 跑腿员流水
 		toLsPty() {
 			console.log('收入流水');
+			this.$tab.navigateTo("../profile/wallet/income")
 		},
 		// 余额
 		loadBalance() {
@@ -130,18 +132,16 @@ export default {
 		},
 		logout() {
 			var that = this
-			this.vusui.confirm('您确定要退出登陆吗？', {
-				icon: 2
-			}, function () {
+			this.$modal.confirm('您确定要退出登陆吗？').then(() => {
 				uni.removeStorageSync('token')
 				uni.removeStorageSync('userId')
 				uni.removeStorageSync('roleId')
 				uni.removeStorageSync('avatar')
 				uni.removeStorageSync('userName')
 				uni.removeStorageSync('phonenumber')
-				uni.reLaunch({
-					url: '../login/login'
-				})
+				this.$tab.reLaunch('../login/index')
+			}).catch(err => {
+				
 			})
 		},
 		// 进入我的资料界面
