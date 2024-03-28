@@ -147,6 +147,7 @@ export default {
         if (res.code == 200) {
           this.taskList = res.data.map(item => {
             return {
+              id: item.orderId,
               name: item.orderUserId,
               type: "kd",
               fbsj: item.orderTime,
@@ -163,6 +164,7 @@ export default {
         if (res.code == 200) {
           this.myList = res.data.map(item => {
             return {
+              id: item.orderId,
               name: this.userInfo.username,
               type: "kd",
               fbsj: item.orderTime,

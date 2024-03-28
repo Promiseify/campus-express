@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" style-type="text"
-			:active-color="baseColor"></uni-segmented-control>
+		<uni-segmented-control :current="current" :values="items" @clickItem="onClickItem"
+			style-type="text"></uni-segmented-control>
 
 		<view class="content">
 			<view v-show="current === 0">
@@ -9,7 +9,7 @@
 				<form>
 					<view class="cu-form-group">
 						<view class="title">发 布 人</view>
-						<input v-model="obj.user.userName"></input>
+						<input v-model="userInfo.username"></input>
 					</view>
 					<view class="cu-form-group">
 						<view class="title">订 单 号</view>
@@ -35,26 +35,21 @@
 
 					<view class="cu-form-group">
 						<view class="title">配送地址</view>
-						<input v-model="obj.address.content"></input>
+						<input v-model="obj.address"></input>
 					</view>
 
 					<view class="cu-form-group">
 						<view class="title">配送电话</view>
-						<input v-model="obj.address.phone"></input>
+						<input v-model="obj.phone"></input>
 					</view>
 
 					<view class="cu-form-group">
-						<view class="title">快递重量</view>
-						<input v-model="obj.weight"></input>
-					</view>
-
-					<view class="cu-form-group">
-						<view class="title">跑腿价格</view>
+						<view class="title">价格</view>
 						<input v-model="obj.money"></input>
 					</view>
 
 					<view class="cu-form-group">
-						<view class="title">跑 腿 员</view>
+						<view class="title">代 取 员</view>
 						<input v-model="obj.pty.userName"></input>
 					</view>
 
@@ -65,10 +60,9 @@
 
 					<view class="cu-form-group">
 						<view class="title">状态</view>
-						<view v-if="obj.status == 1">已接单</view>
-						<view v-if="obj.status == 2">配送中</view>
-						<view v-if="obj.status == 3">已完成</view>
-						<view v-if="obj.status == 4">已取消</view>
+						<view v-if="obj.status == 1">待接单</view>
+						<view v-if="obj.status == 2">派送中</view>
+						<view v-if="obj.status == 3">派送完成</view>
 					</view>
 
 				</form>
@@ -109,14 +103,23 @@
 </template>
 
 <script>
+import { getOrders } from "@/api/module/order"
+
 export default {
 	data() {
+		const userInfo = uni.getStorageSync("userInfo")
 		return {
+			userInfo: JSON.parse(userInfo),
 			obj: {
 				user: {},
 				pty: {},
-				address: {},
-				id: ''
+				id: '',
+				num: '',
+				place: '',
+				code: '',
+				remark: '',
+				address: '',
+				phone: ''
 			},
 			message: {
 				utype: ''
@@ -126,22 +129,30 @@ export default {
 			messageList: []
 		}
 	},
-	created() {
-		// 加载
-		this.loadObj()
-		this.loadMessage()
-		var roleId = uni.getStorageSync('roleId')
-		if (roleId == 116) {
-			this.message.utype = 'user'
-		} else {
-			this.message.utype = 'pty'
-		}
-	},
 	onLoad(options) {
 		this.obj.id = options.id
 		this.message.orderId = options.id
+
+		this.getOrdersFn(options.id)
+		this.obj.num = options.id
+		this.obj.code = options.id
 	},
 	methods: {
+		getOrdersFn(orderId) {
+			getOrders({ orderId: orderId }).then(res => {
+				if (res.code == 200) {
+					const data = res.data[0]
+					console.log(data);
+					this.obj.place = data.orderPlace
+					this.obj.remark = data.orderRemark
+					this.obj.fbsj = data.orderTime
+					this.obj.address = data.orderAddress
+					this.obj.phone = this.userInfo.phone
+					this.obj.money = data.orderPrice
+					this.obj.status = data.orderStatus
+				}
+			})
+		},
 		loadObj() {
 			this.http.get('').then((res) => {
 				if (res.code != 0) {
