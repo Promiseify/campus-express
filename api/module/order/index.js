@@ -17,3 +17,12 @@ export function getOrders(data) {
     params: data
   })
 }
+
+// 接取订单
+export function updateOrderById(data) {
+  return request({
+    url: "/order/update",
+    method: 'post',
+    data: data
+  })
+}

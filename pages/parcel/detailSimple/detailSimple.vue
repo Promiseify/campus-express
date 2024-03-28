@@ -5,7 +5,7 @@
 			<form>
 				<view class="cu-form-group">
 					<view class="title">发 布 人</view>
-					<input v-model="obj.user.userName"></input>
+					<input v-model="obj.username"></input>
 				</view>
 				<view class="cu-form-group">
 					<view class="title">订 单 号</view>
@@ -31,21 +31,16 @@
 
 				<view class="cu-form-group">
 					<view class="title">配送地址</view>
-					<input v-model="obj.address.content"></input>
+					<input v-model="obj.address"></input>
 				</view>
 
 				<view class="cu-form-group">
 					<view class="title">配送电话</view>
-					<input v-model="obj.address.phone"></input>
+					<input v-model="obj.phone"></input>
 				</view>
 
 				<view class="cu-form-group">
-					<view class="title">快递重量</view>
-					<input v-model="obj.weight"></input>
-				</view>
-
-				<view class="cu-form-group">
-					<view class="title">跑腿价格</view>
+					<view class="title">价格</view>
 					<input v-model="obj.money"></input>
 				</view>
 				<view class="padding flex flex-direction">
@@ -60,26 +55,31 @@
 </template>
 
 <script>
+import { getOrders, updateOrderById  } from "@/api/module/order"
+
 export default {
+
 	data() {
+		const userInfo = uni.getStorageSync("userInfo")
 		return {
+			userInfo: JSON.parse(userInfo),
 			obj: {
-				user: {
-					userName: "张三"
-				},
-				pty: {},
-				address: {
-					content: "宿舍楼一号",
-					phone: "1821773009"
-				},
-				id: '',
-				num: 123456,
-				place: "东门",
-				code: 1234556,
-				remark: "有些重",
-				fbsj: "2024-03-10",
-				weight: "30kg",
-				money: 100
+				username: '',
+				address: '',
+				phone: '',
+				// pty: {},
+				// address: {
+				// 	content: "宿舍楼一号",
+				// 	phone: "1821773009"
+				// },
+				// id: '',
+				// num: 123456,
+				// place: "东门",
+				// code: 1234556,
+				// remark: "有些重",
+				// fbsj: "2024-03-10",
+				// weight: "30kg",
+				// money: 100
 			}
 		}
 	},
@@ -89,8 +89,26 @@ export default {
 	},
 	onLoad(options) {
 		this.obj.id = options.id
+		this.getOrdersFn(options.id)
+		this.obj.num = options.id
+		this.obj.code = options.id
 	},
 	methods: {
+		getOrdersFn(orderId) {
+			getOrders({ orderId: orderId }).then(res => {
+				if (res.code == 200) {
+					const data = res.data[0]
+					this.obj.username = data.orderUserId
+					this.obj.place = data.orderPlace
+					this.obj.remark = data.orderRemark
+					this.obj.fbsj = data.orderTime
+					this.obj.address = data.orderAddress
+					this.obj.money = data.orderPrice
+					this.obj.status = data.orderStatus
+					this.obj.userManId = data.orderManId
+				}
+			})
+		},
 		loadObj() {
 			this.http.get('').then((res) => {
 				if (res.code != 0) {
@@ -101,7 +119,18 @@ export default {
 			})
 		},
 		handleReceive() {
-			this.$modal.showToast("接取成功，请按照规定时间送达！")
+			updateOrderById({
+				orderId: this.obj.id,
+				orderManId: this.userInfo.userId,
+				orderStatus: 2
+			}).then(res => {
+				if (res.code == 200) {
+					this.$modal.showToast("接取成功，请按照规定时间送达！")
+					setTimeout(() => {
+						this.$tab.switchTab("/pages/index/index")
+					}, 1000);
+				}
+			})
 		}
 	}
 }

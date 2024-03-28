@@ -50,7 +50,7 @@
 
 					<view class="cu-form-group">
 						<view class="title">代 取 员</view>
-						<input v-model="obj.pty.userName"></input>
+						<input v-model="obj.userManId"></input>
 					</view>
 
 					<view class="cu-form-group">
@@ -119,7 +119,8 @@ export default {
 				code: '',
 				remark: '',
 				address: '',
-				phone: ''
+				phone: '',
+				userManId: ''
 			},
 			message: {
 				utype: ''
@@ -143,6 +144,7 @@ export default {
 				if (res.code == 200) {
 					const data = res.data[0]
 					console.log(data);
+					
 					this.obj.place = data.orderPlace
 					this.obj.remark = data.orderRemark
 					this.obj.fbsj = data.orderTime
@@ -150,6 +152,7 @@ export default {
 					this.obj.phone = this.userInfo.phone
 					this.obj.money = data.orderPrice
 					this.obj.status = data.orderStatus
+					this.obj.userManId = data.orderManId
 				}
 			})
 		},
@@ -176,7 +179,6 @@ export default {
 			var that = this
 			this.vusui.load(3)
 			this.http.post('', this.message).then((res) => {
-				this.vusui.close("loading");
 				if (res.code != 0) {
 					this.vusui.alert(res.msg)
 					return false
