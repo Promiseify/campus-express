@@ -95,6 +95,8 @@
 </template>
 
 <script>
+import { getOrders } from "@/api/module/order"
+
 export default {
   data() {
     const userInfo = uni.getStorageSync("userInfo")
@@ -128,39 +130,47 @@ export default {
       userInfo: JSON.parse(userInfo)
     };
   },
+  onShow() {
+    this.initPage()
+  },
   methods: {
+    initPage() {
+      if (this.userInfo.roleId == 1) {
+        this.getMyTaskList()
+      } else if (this.userInfo.roleId == 2) {
+        this.loadPtTaskList()
+      }
+    },
     // 待接单任务
     loadPtTaskList() {
-      this.http.post('').then((res) => {
-        if (res.code != 0) return false
-        var bList = [];
-        if (res.rows) {
-          for (var i = 0; i < res.rows.length; i++) {
-            var obj = res.rows[i]
-            var avatar = obj.avatar
-            obj.avatar = this.tool.formatURL(avatar)
-            obj.fbsj = this.tool.formatTime(obj.fbsj)
-            bList.push(obj)
-          }
+      getOrders({ orderStatus: 1 }).then(res => {
+        if (res.code == 200) {
+          this.taskList = res.data.map(item => {
+            return {
+              name: item.orderUserId,
+              type: "kd",
+              fbsj: item.orderTime,
+              distance: "1",
+              moneyPaotui: item.orderPrice
+            }
+          })
         }
-        this.taskList = bList
       })
     },
     // 我发布的未完成的任务
-    loadMyTaskList() {
-      this.http.post('').then((res) => {
-        if (res.code != 0) return false
-        var bList = [];
-        if (res.rows) {
-          for (var i = 0; i < res.rows.length; i++) {
-            var obj = res.rows[i]
-            var avatar = obj.avatar
-            obj.avatar = this.tool.formatURL(avatar)
-            obj.fbsj = this.tool.formatTime(obj.fbsj)
-            bList.push(obj)
-          }
+    getMyTaskList() {
+      getOrders({ orderUserId: this.userInfo.userId }).then(res => {
+        if (res.code == 200) {
+          this.myList = res.data.map(item => {
+            return {
+              name: this.userInfo.username,
+              type: "kd",
+              fbsj: item.orderTime,
+              distance: "1",
+              moneyPaotui: item.orderPrice
+            }
+          })
         }
-        this.myList = bList
       })
     },
     detail(id, type) {

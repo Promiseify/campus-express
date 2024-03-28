@@ -8,3 +8,12 @@ export function issueOrder(data) {
     data: data
   })
 }
+
+// 查询订单
+export function getOrders(data) {
+  return request({
+    url: "/order/match",
+    method: 'get',
+    params: data
+  })
+}
