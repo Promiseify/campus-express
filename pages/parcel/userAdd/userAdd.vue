@@ -2,96 +2,89 @@
 	<view>
 		<view class="content">
 			<form>
-
 				<view class="cu-form-group">
-					<view class="title">配送地址</view>
-					<picker @change="pickerAddress" :range="addressList" range-key="content">
-						<view class="picker">
-							{{ obj.address.content }}
-						</view>
-					</picker>
+					<view class="title">送货地址</view>
+					<input v-model="order.orderAddress"></input>
 				</view>
 
 				<view class="cu-form-group">
 					<view class="title">取货地点</view>
-					<input v-model="obj.place"></input>
+					<input v-model="order.orderPlace"></input>
 				</view>
 
 				<view class="cu-form-group">
-					<view class="title">快递单号</view>
-					<input v-model="obj.code"></input>
+					<view class="title">收货时间</view>
+					<input v-model="order.orderTime"></input>
 				</view>
 
 				<view class="cu-form-group">
-					<view class="title">快递重量</view>
-					<input v-model="obj.weight"></input>
+					<view class="title">价格</view>
+					<input v-model="order.orderPrice"></input>
 				</view>
 
 				<view class="cu-form-group">
 					<view class="title">备注说明</view>
-					<input v-model="obj.remark"></input>
+					<input v-model="order.orderRemark"></input>
 				</view>
-
-				<view class="grid col-1 padding-sm bg-white margin-top" @tap="add">
+				<view class="grid col-1 padding-sm bg-white margin-top" @tap="handleIssue">
 					<view class="margin-tb-sm text-center">
 						<button class="cu-btn bg-blue lg">发布</button>
 					</view>
 				</view>
-
 			</form>
-
 		</view>
-
-
 	</view>
 </template>
 
 <script>
+import { issueOrder } from "@/api/module/order";
+
 export default {
 	data() {
+		const userInfo = uni.getStorageSync("userInfo")
 		return {
-			obj: {
-				address: {
-					content: "潍坊理工学院"
-				},
-				place: "紫罗兰",
-				code: 12345678,
-				weight: '100kg',
-				remark: '无'
-			},
-			addressList: []
+			userInfo: userInfo,
+			order: {
+				orderAddress: undefined,
+				orderPlace: undefined,
+				orderTime: undefined,
+				orderPrice: undefined,
+				orderRemark: undefined,
+				// 订单类型
+				orderType: undefined,
+				// 订单状态
+				orderStatus: undefined,
+				orderUserId: JSON.parse(userInfo)?.userId
+			}
 		}
 	},
-	created() {
-		// this.loadAddressList()
-	},
-	onLoad(options) {
-
-	},
 	methods: {
-		// 加载地址
-		loadAddressList(){
-			this.http.get('').then((res) => {
-				if(res.code != 0) {
-					this.vusui.alert(res.msg)
-					return false
+		reset() {
+			this.order = {
+				orderAddress: undefined,
+				orderPlace: undefined,
+				orderTime: undefined,
+				orderPrice: undefined,
+				orderRemark: undefined,
+				// 订单类型
+				orderType: undefined,
+				// 订单状态
+				orderStatus: undefined,
+				orderUserId: this.userInfo?.userId
+			}
+		},
+		handleIssue() {
+			this.order.orderType = 2;
+			this.order.orderStatus = 1;
+			issueOrder(this.order).then(res => {
+				if (res.code == 200) {
+					this.$modal.msgSuccess(res.msg)
+					setTimeout(() => {
+						this.reset()
+						this.$tab.switchTab("/pages/index/index")
+					}, 1000);
 				}
-				this.addressList = res.rows
-				if(this.addressList.length == 0){
-					this.vusui.alert("暂未设置地址，请到地址管理中录入")
-				}
-				this.obj.address = this.addressList[0]
 			})
-		},
-		// 选择类型
-		pickerAddress(e) {
-			var index = e.detail.value;
-			this.obj.address = this.addressList[index]
-		},
-
-		add() {
-			this.vusui.load(3)
-			this.vusui.alert("成功")
 		}
 	}
 }

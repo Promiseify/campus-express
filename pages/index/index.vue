@@ -9,52 +9,95 @@
         </swiper-item>
       </swiper>
     </view>
+    <template v-if="userInfo.roleId == 1">
+      <!-- 用户 -->
+      <view class="cu-list grid" :class="['col-3']">
+        <view class="cu-item" @tap="toFoodUserAdd()">
+          <view class="cuIcon-same base_fontcolor bigsize "></view>
+          <text>外卖</text>
+        </view>
+        <view class="cu-item" @tap="toParcelUserAdd()">
+          <view class="cuIcon-deliver base_fontcolor bigsize"></view>
+          <text>快递</text>
+        </view>
+        <view class="cu-item" @tap="toOtherUserAdd()">
+          <view class="cuIcon-pick base_fontcolor bigsize"></view>
+          <text>其他</text>
+        </view>
+      </view>
 
-    <!-- 跑腿 -->
-    <view class="cu-list grid" :class="['col-3']">
-      <view class="cu-item" @tap="toFoodTask()">
-        <view class="cuIcon-same base_fontcolor bigsize "></view>
-        <text>外卖</text>
-      </view>
-      <view class="cu-item" @tap="toParcelTask()">
-        <view class="cuIcon-deliver base_fontcolor bigsize"></view>
-        <text>快递</text>
-      </view>
-      <view class="cu-item" @tap="toOtherTask()">
-        <view class="cuIcon-pick base_fontcolor bigsize"></view>
-        <text>其他</text>
-      </view>
-    </view>
+      <!-- 用户 -->
+      <view class="cu-list menu-avatar">
+        <view class="cu-item margin-top-min" @tap="detailUser(pt.id, pt.type)" @longpress="jd(pt.id, pt.type)"
+          v-for="(pt, index) in myList" :key="index">
+          <img class="avator" src="@/static/logo.png" alt="">
+          <view class="content">
+            <view class="text-grey">{{ pt.name }}</view>
+            <view class="text-gray text-sm">
+              <view v-if="pt.type == 'kd'" class="bg-blue cu-tag">快递</view>
+              <view v-if="pt.type == 'wm'" class="bg-blue cu-tag">外卖</view>
+              <view v-if="pt.type == 'qt'" class="bg-blue cu-tag">其他</view>
+              <text class="text-red  margin-right-xs margin-right"></text>
+              {{ pt.fbsj }}
+            </view>
 
-    <!-- 跑腿 -->
-    <view class="cu-list menu-avatar">
-      <view class="cu-item margin-top-min" @tap="detail(pt.id, pt.type)" @longpress="jd(pt.id, pt.type)"
-        v-for="(pt, index) in taskList" :key="index">
-        <img class="avator" src="@/static/logo.png" alt="">
-        <view class="content">
-          <view class="text-grey">{{ pt.name }}</view>
-          <view class="text-gray text-sm">
-            <view v-if="pt.type == 'kd'" class="bg-blue cu-tag">快递</view>
-            <view v-if="pt.type == 'wm'" class="bg-blue cu-tag">外卖</view>
-            <view v-if="pt.type == 'qt'" class="bg-blue cu-tag">其他</view>
-            <text class="text-red  margin-right-xs margin-right"></text>
-            {{ pt.fbsj }}
           </view>
-
-        </view>
-        <view class="action">
-          <view v-if="pt.type == 'kd'" class="text-grey text-xs">{{ pt.distance }}KG</view>
-          <view v-else class="text-grey text-xs">{{ pt.distance }}KM</view>
-          <view class="cu-tag round bg-red lg">￥{{ pt.moneyPaotui }}</view>
+          <view class="action">
+            <view v-if="pt.type == 'kd'" class="text-grey text-xs">{{ pt.distance }}KG</view>
+            <view v-else class="text-grey text-xs">{{ pt.distance }}KM</view>
+            <view class="cu-tag round bg-red lg">￥{{ pt.moneyPaotui }}</view>
+          </view>
         </view>
       </view>
-    </view>
+    </template>
+    <template v-if="userInfo.roleId == 2">
+      <!-- 跑腿 -->
+      <view class="cu-list grid" :class="['col-3']">
+        <view class="cu-item" @tap="toFoodTask()">
+          <view class="cuIcon-same base_fontcolor bigsize "></view>
+          <text>外卖</text>
+        </view>
+        <view class="cu-item" @tap="toParcelTask()">
+          <view class="cuIcon-deliver base_fontcolor bigsize"></view>
+          <text>快递</text>
+        </view>
+        <view class="cu-item" @tap="toOtherTask()">
+          <view class="cuIcon-pick base_fontcolor bigsize"></view>
+          <text>其他</text>
+        </view>
+      </view>
+
+      <!-- 跑腿 -->
+      <view class="cu-list menu-avatar">
+        <view class="cu-item margin-top-min" @tap="detail(pt.id, pt.type)" @longpress="jd(pt.id, pt.type)"
+          v-for="(pt, index) in taskList" :key="index">
+          <img class="avator" src="@/static/logo.png" alt="">
+          <view class="content">
+            <view class="text-grey">{{ pt.name }}</view>
+            <view class="text-gray text-sm">
+              <view v-if="pt.type == 'kd'" class="bg-blue cu-tag">快递</view>
+              <view v-if="pt.type == 'wm'" class="bg-blue cu-tag">外卖</view>
+              <view v-if="pt.type == 'qt'" class="bg-blue cu-tag">其他</view>
+              <text class="text-red  margin-right-xs margin-right"></text>
+              {{ pt.fbsj }}
+            </view>
+
+          </view>
+          <view class="action">
+            <view v-if="pt.type == 'kd'" class="text-grey text-xs">{{ pt.distance }}KG</view>
+            <view v-else class="text-grey text-xs">{{ pt.distance }}KM</view>
+            <view class="cu-tag round bg-red lg">￥{{ pt.moneyPaotui }}</view>
+          </view>
+        </view>
+      </view>
+    </template>
   </view>
 </template>
 
 <script>
 export default {
   data() {
+    const userInfo = uni.getStorageSync("userInfo")
     return {
       bannerList: [
         {
@@ -81,7 +124,8 @@ export default {
       myList: [],
       timeout: 5000, // 30s
       timeoutObj: null,
-      roleId: 117
+      roleId: 1,
+      userInfo: JSON.parse(userInfo)
     };
   },
   methods: {
