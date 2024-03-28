@@ -36,7 +36,6 @@
     "color": "#000000",
     "selectedColor": "#0081FF",
     "backgroundColor": "#FFFFFF",
-    "fontSize": "16px",
     "list": [
       {
         "pagePath": "pages/index/index",

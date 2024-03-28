@@ -1,28 +1,22 @@
 <template>
-	<view :style="{ 'height': windowHeight }" style="width: 100%">
+	<view style="width: 100%">
 		<form>
 			<view class="cu-form-group margin-top">
 				<view class="title">用户名</view>
-				<input placeholder="请输入用户名" v-model="user.loginName"></input>
+				<input placeholder="请输入用户名" v-model="user.username"></input>
 			</view>
 			<view class="cu-form-group">
 				<view class="title">密码</view>
 				<input placeholder="请输入密码" v-model="user.password" type="password"></input>
 			</view>
-
-			<view class="cu-form-group ">
-				<view class="title">姓名</view>
-				<input placeholder="请输入姓名" v-model="user.userName"></input>
-			</view>
-
 			<view class="cu-form-group ">
 				<view class="title">手机号</view>
-				<input placeholder="请输入手机号" v-model="user.phonenumber"></input>
+				<input placeholder="请输入手机号" v-model="user.phone"></input>
 			</view>
 
 			<view class="cu-form-group ">
 				<view class="title">身份证</view>
-				<input placeholder="请输入身份证" v-model="user.idcardno"></input>
+				<input placeholder="请输入身份证" v-model="user.idCard"></input>
 			</view>
 
 			<view class="cu-form-group ">
@@ -32,12 +26,11 @@
 
 			<view class="cu-form-group">
 				<view class="title">身份</view>
-				<picker @change="pickerRole" :range="user.roleList" range-key="name">
-					<view class="picker">{{ user.roleName }}</view>
+				<picker @change="handlePickerRole" :range="roleList" range-key="name">
+					<view class="picker">{{ user.role }}</view>
 				</picker>
 			</view>
-
-			<view class="padding flex flex-direction" @tap="register()">
+			<view class="padding flex flex-direction" @tap="handleRegister()">
 				<button class="cu-btn bg-red margin-tb-sm lg">注册</button>
 			</view>
 
@@ -49,57 +42,69 @@
 </template>
 
 <script>
+import { register } from "@/api/module/auth"
 export default {
 	data() {
 		return {
-			windowHeight: "200px",
-			msg: '',
-			bgurl: '',
 			user: {
-				roleName: '用户',
-				roleId: 116,
-				roleList: [
-					{ id: 116, name: '用户' },
-					{ id: 117, name: '跑腿员' }
-				],
-			}
+				username: '',
+				password: '',
+				roleId: 1,
+				role: '用户',
+				phone: undefined,
+				email: undefined,
+				idCard: undefined
+			},
+			roleList: [
+				{ id: 1, name: '用户' },
+				{ id: 2, name: '代取员' }
+			]
 		}
 	},
-	onLoad() {
-	},
 	methods: {
-		pickerRole(e) {
+		// 选择角色
+		handlePickerRole(e) {
 			var index = e.detail.value
-			this.user.roleId = this.user.roleList[index].id
-			this.user.roleName = this.user.roleList[index].name
+			this.user.roleId = this.roleList[index].id
+			this.user.role = this.roleList[index].name
 		},
+
 		tologin() {
 			uni.navigateTo({
 				url: "../index"
 			})
 		},
 
-		register: function () {
-			if (this.user.loginName.length == 0 || this.user.password.length == 0) {
-				this.vusui.alert('请输入用户名和密码')
-				return false;
+		handleRegister: function () {
+			if (!this.user.username) {
+				return this.$modal.showToast('请输入用户名')
 			}
-			this.http.post('/openapi/system/register', {
-				loginName: this.user.loginName,
-				userName: this.user.userName,
-				password: this.user.password,
-				email: this.user.email,
-				roleId: this.user.roleId,
-				idcardno: this.user.idcardno,
-				phonenumber: this.user.phonenumber,
-			}).then((res) => {
-				if (res.code != 0) {
-					this.vusui.alert(res.msg)
-					return false;
+
+			if (!this.user.password) {
+				return this.$modal.showToast('请输入密码')
+			}
+
+			if (!this.user.phone) {
+				return this.$modal.showToast('请输入电话')
+			}
+
+			if (!this.user.email) {
+				return this.$modal.showToast('请输入邮箱')
+			}
+
+			if (!this.user.idCard) {
+				return this.$modal.showToast('请输入身份证')
+			}
+
+			register(this.user).then(res => {
+				if (res.code == 200) {
+					this.$modal.msgSuccess(res.msg)
+					setTimeout(() => {
+						this.$tab.navigateTo("../index")
+					}, 1000);
+				} else {
+					this.$modal.showToast(res.msg)
 				}
-				uni.navigateTo({
-					url: "../index"
-				})
 			})
 		}
 	}

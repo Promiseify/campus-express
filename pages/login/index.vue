@@ -58,24 +58,23 @@ export default {
     },
     handleLogin() {
       if (this.queryParams.username.length == 0 || this.queryParams.password.length == 0) {
-        this.$modal.showToast('请输入用户名和密码')
-        return false;
+        return this.$modal.showToast('请输入用户名和密码')
       }
 
-      // TODO
-      this.$tab.switchTab("/pages/index/index")
-      // login(this.queryParams).then(res => {
-      //   if (res.code == 200) {
-      //     //登陆成功后获取用户信息，放入storage
-      //     uni.setStroage({
-      //       key: 'userInfo',
-      //       data: JSON.stringify(res.data),
-      //       success: function () {
-      //         this.$tab.switchTab("index/index")
-      //       }
-      //     })
-      //   }
-      // })
+      login(this.queryParams).then(res => {
+        if (res.code == 200) {
+          //登陆成功后获取用户信息，放入storage
+          uni.setStorage({
+            key: 'userInfo',
+            data: JSON.stringify(res.data),
+            success: () => {
+              this.$tab.switchTab("/pages/index/index")
+            }
+          })
+        } else {
+          this.$modal.showToast(res.msg)
+        }
+      })
     }
   }
 }
