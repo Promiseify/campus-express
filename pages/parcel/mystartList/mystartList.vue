@@ -1,26 +1,33 @@
 <template>
-	<view>
-		<view class="cu-list menu">
-			<view class="cu-item" @tap="detail(pt.id, pt.status)" @longpress="cancel(pt.id, pt.status)"
-				v-for="(pt, index) in taskList" :key="index">
-				<img class="avator" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 20px;"
-					src="@/static/logo.png" alt="">
+	<view class="list">
+		<view class="tabs">
+			<u-tabs :list="list" :is-scroll="false" :current="current" @change="change"></u-tabs>
+		</view>
+		<view class="data-list">
+			<view class="data-item" v-for="(item, index) in dataList">
+				<view class="avatar">
+					<img class="avator" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;"
+						src="@/static/logo.png" alt="">
+				</view>
 				<view class="content">
-					<view v-if="pt.status == 1 || pt.status == 2 || pt.status == 3" class="text-grey">{{ pt.pty.userName }}</view>
-					<view class="text-gray text-sm">
-						<view v-if="pt.status == 0" class="bg-blue cu-tag">待接单</view>
-						<view v-if="pt.status == 1" class="bg-blue cu-tag">已接单</view>
-						<view v-if="pt.status == 2" class="bg-blue cu-tag">配送中</view>
-						<view v-if="pt.status == 3" class="bg-blue cu-tag">已完成</view>
-						<view v-if="pt.status == 4" class="bg-blue cu-tag">已取消</view>
-						<text class="text-red  margin-right-xs margin-right"></text>
-						{{ pt.fbsj }}
+					<view class="type">类型：{{ getTypes(item.orderType) }}</view>
+					<view class="address">发布人地址：{{ item.orderAddress }}</view>
+					<view class="place">快递点：{{ item.orderPlace }}</view>
+					<view class="remark">备注：{{ item.remark }}</view>
+					<view class="footer">
+						<view class="footer-item price">
+							<u-tag :text="'￥' + item.orderPrice" shape="circle" mode="dark" type="success" />
+						</view>
+						<view class="footer-item status">
+							<u-tag :text="getStatus(item.orderStatus)" shape="circle" mode="dark" type="primary" />
+						</view>
+						<view class="footer-item review">
+							<u-tag :text="item.review" shape="circle" mode="dark" type="error" />
+						</view>
 					</view>
 				</view>
-
-				<view class="action">
-					<view class="text-grey text-xs">{{ pt.weight }}KG</view>
-					<view class="cu-tag round bg-red lg">￥{{ pt.money }}</view>
+				<view class="control">
+					<u-button type="warning" size="mini" shape="circle" @tap="cancel(item.orderId)">取消订单</u-button>
 				</view>
 			</view>
 		</view>
@@ -28,103 +35,147 @@
 </template>
 
 <script>
+import { getOrders, deleteOrderById } from "@/api/module/order"
+
 export default {
+
 	data() {
+		const userInfo = JSON.parse(uni.getStorageSync("userInfo"))
 		return {
-			taskList: [
-				{
-					id: 1,
-					status: 1,
-					pty: {
-						userName: "Promiseify"
-					},
-					weight: 50,
-					money: 100
-				},
-				{
-					id: 2,
-					status: 3,
-					pty: {
-						userName: "Promiseify"
-					},
-					weight: 2,
-					money: 20
-				}
-			]
+			list: [{
+				name: '全部'
+			}, {
+				name: '待接单'
+			}, {
+				name: '已接单'
+			}, {
+				name: '已完成'
+			}],
+			current: 0, // tabs组件的current值，表示当前活动的tab选项
+			dataList: [],
+			userInfo
 		}
 	},
 	created() {
-		// this.listMystart()
 	},
-	// onShow() {
-	// 	var pages = getCurrentPages();
-	// 	//当前页面的数据
-	// 	var currPage = pages[pages.length - 1];  
-	// 	var data = currPage.$vm.data
-	// 	if(data != null){
-	// 		var needReflush = data.needReflush;
-	// 		if(needReflush == 1){
-	// 			this.listMystart()
-	// 			var datax = {
-	// 				needReflush : 0
-	// 			}
-	// 			currPage.$vm.data=datax
-	// 		}
-	// 	} 
-	// },
+	onShow() {
+		this.getAllOrders({
+			orderUserId: this.userInfo.userId
+		})
+	},
 	methods: {
-		// 列表
-		listMystart() {
-			this.http.post('', {
-			}).then((res) => {
-				if (res.code != 0) return false
-				var bList = [];
-				if (res.rows) {
-					for (var i = 0; i < res.rows.length; i++) {
-						var obj = res.rows[i]
-						if (obj.pty) {
-							var avatar = obj.pty.avatar
-							obj.pty.avatar = this.tool.formatURL(avatar)
-						}
-						obj.fbsj = this.tool.formatTime(obj.fbsj)
-						bList.push(obj)
-					}
-				}
-				this.taskList = bList
+		change({ index }) {
+			this.current = index;
+			this.getAllOrders({
+				orderUserId: this.userInfo.userId,
+				orderStatus: index == 0 ? undefined : index
 			})
 		},
-		detail(id, status) {
-			if (status == 0 || status == 4) {
-				uni.navigateTo({
-					url: '../detailSimple/detailSimple?id=' + id
-				})
-			} else {
-				uni.navigateTo({
-					url: '../detailComplex/detailComplex?id=' + id
-				})
+		// 列表
+		getAllOrders(data) {
+			getOrders(data).then(res => {
+				console.log(res);
+				this.dataList = res.data
+			})
+		},
+		getStatus(status) {
+			switch (status) {
+				case 1:
+					return "待接单"
+				case 2:
+					return "派送中"
+				case 3:
+					return "派送完成"
+				default:
+					break;
 			}
 		},
-		// 取消
-		cancel(id, status) {
-			if (status == 0) {
-				var that = this
-				this.vusui.confirm('您确定要取消该订单吗？', {
-					icon: 2
-				}, function () {
-					that.vusui.load(3)
-					that.http.post('/openapi/parcel/user/cancel/' + id).then((res) => {
-						that.vusui.close("loading")
-						if (res.code != 0) {
-							that.vusui.alert(res.msg)
-							return false
-						} else {
-							that.vusui.alert('操作成功')
-							that.listMystart();
-						}
-					})
-				})
+		getTypes(type) {
+			switch (type) {
+				case 1:
+					return "外卖"
+				case 2:
+					return "快递"
+				case 3:
+					return "药品"
+				default:
+					break;
 			}
+		},
+		// detail(id, status) {
+		// 	if (status == 0 || status == 4) {
+		// 		uni.navigateTo({
+		// 			url: '../detailSimple/detailSimple?id=' + id
+		// 		})
+		// 	} else {
+		// 		uni.navigateTo({
+		// 			url: '../detailComplex/detailComplex?id=' + id
+		// 		})
+		// 	}
+		// },
+		// 取消
+		cancel(id) {
+			this.$modal.confirm("您是否要取消该订单？").then(res => {
+				deleteOrderById(id).then(res => {
+					if (res.code == 200) {
+						this.$modal.msgSuccess(res.msg)
+
+						setTimeout(() => {
+							this.getAllOrders({
+								orderUserId: this.userInfo.userId,
+								orderStatus: this.current == 0 ? undefined : this.current
+							})
+						}, 1000);
+					}
+				})
+			})
 		}
 	}
 }
 </script>
+
+<style lang="scss">
+.tabs {
+	background-color: #fff;
+}
+
+.list {
+	height: 100%;
+	width: 100vw;
+	background-color: #dddddd;
+}
+
+.data-list .data-item {
+	position: relative;
+	display: flex;
+	margin: 10px;
+	padding: 10px;
+	border-radius: 15px;
+	background-color: #fff;
+}
+
+.data-item .content {
+	flex: 1;
+}
+
+.content>view {
+	margin: 3px 0;
+}
+
+.content .footer {
+	display: flex;
+	flex-direction: row-reverse;
+	margin-top: 8px;
+}
+
+.footer .footer-item {
+	flex: 1;
+	text-align: center;
+	margin: 0 3px;
+}
+
+.data-item .control {
+	position: absolute;
+	right: 20px;
+}
+</style>

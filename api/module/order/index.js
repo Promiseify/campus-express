@@ -26,3 +26,27 @@ export function updateOrderById(data) {
     data: data
   })
 }
+
+// 根据id删除订单
+export function deleteOrderById(data) {
+  return request({
+    url: "/order/" + data,
+    method: 'delete'
+  })
+}
+
+export function getAllOrderStatus(data) {
+  return request({
+    url: "/orderStatus/",
+    method: 'get',
+    params: data
+  })
+}
+
+export function getAllOrderType(data) {
+  return request({
+    url: "/orderTypes/",
+    method: 'get',
+    params: data
+  })
+}

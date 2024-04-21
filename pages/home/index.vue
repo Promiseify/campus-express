@@ -7,7 +7,7 @@
 						<img class="avator" src="@/static/logo.png" alt="">
 						<view class="phone-number">{{ username }}</view>
 						<view class="item margin-top">
-							<view class="text">余额：{{ currency }} {{ balance }}</view>
+							<view class="text">余额：{{ currency }}{{ balance }}</view>
 						</view>
 					</view>
 				</view>
@@ -106,7 +106,7 @@ export default {
 			roleId: ''
 		}
 	},
-	mounted(){
+	mounted() {
 		getWalletByUserId(this.userId).then(res => {
 			if (res.code == 200) {
 				this.balance = res.data.balance
@@ -116,11 +116,11 @@ export default {
 		})
 	},
 	onShow() {
-    const userInfo = JSON.parse(uni.getStorageSync("userInfo"))
-    this.userId = userInfo.userId
-    this.username = userInfo.username
-    this.roleId = userInfo.roleId
-  },
+		const userInfo = JSON.parse(uni.getStorageSync("userInfo"))
+		this.userId = userInfo.userId
+		this.username = userInfo.username
+		this.roleId = userInfo.roleId
+	},
 	methods: {
 		// 用户流水
 		toLsUser() {
@@ -140,15 +140,18 @@ export default {
 		toMyAddress() {
 			uni.navigateTo({
 				url: '../address/address'
+				
 			})
 		},
 		// 我的订单-用户
 		toMyOrderUser() {
-
+			uni.navigateTo({
+				url: '../parcel/mystartList/mystartList'
+			})
 		},
 		toMyOrderPty() {
 			uni.navigateTo({
-				url: '../parcel/mystartList/mystartList'
+				url: '../parcel/mytaskList/mytaskList'
 			})
 		},
 		logout() {
@@ -162,7 +165,7 @@ export default {
 				uni.removeStorageSync('phonenumber')
 				this.$tab.reLaunch('../login/index')
 			}).catch(err => {
-				
+
 			})
 		},
 		// 进入我的资料界面
