@@ -106,7 +106,12 @@ export default {
 			roleId: ''
 		}
 	},
-	mounted() {
+	onShow() {
+		const userInfo = JSON.parse(uni.getStorageSync("userInfo"))
+		this.userId = userInfo.userId
+		this.username = userInfo.username
+		this.roleId = userInfo.roleId
+
 		getWalletByUserId(this.userId).then(res => {
 			if (res.code == 200) {
 				this.balance = res.data.balance
@@ -114,12 +119,6 @@ export default {
 				this.currency = res.data.currency
 			}
 		})
-	},
-	onShow() {
-		const userInfo = JSON.parse(uni.getStorageSync("userInfo"))
-		this.userId = userInfo.userId
-		this.username = userInfo.username
-		this.roleId = userInfo.roleId
 	},
 	methods: {
 		// 用户流水

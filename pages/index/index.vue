@@ -28,24 +28,24 @@
 
       <!-- 用户 -->
       <view class="cu-list menu-avatar">
-        <view class="cu-item margin-top-min" @tap="detailUser(pt.id, pt.type)" @longpress="jd(pt.id, pt.type)"
-          v-for="(pt, index) in myList" :key="index">
+        <view class="cu-item margin-top-min" @tap="detailUser(item.id, item.type)" @longpress="jd(item.id, item.type)"
+          v-for="(item, index) in myList" :key="index">
           <img class="avator" src="@/static/logo.png" alt="">
           <view class="content">
-            <view class="text-grey">{{ pt.name }}</view>
+            <view class="text-grey">{{ item.name }}</view>
             <view class="text-gray text-sm">
-              <view v-if="pt.type == 'kd'" class="bg-blue cu-tag">快递</view>
-              <view v-if="pt.type == 'wm'" class="bg-blue cu-tag">外卖</view>
-              <view v-if="pt.type == 'qt'" class="bg-blue cu-tag">其他</view>
+              <view v-if="item.type == 'kd'" class="bg-blue cu-tag">快递</view>
+              <view v-if="item.type == 'wm'" class="bg-blue cu-tag">外卖</view>
+              <view v-if="item.type == 'qt'" class="bg-blue cu-tag">其他</view>
               <text class="text-red  margin-right-xs margin-right"></text>
-              {{ pt.fbsj }}
+              {{ item.orderTime }}
             </view>
 
           </view>
           <view class="action">
-            <view v-if="pt.type == 'kd'" class="text-grey text-xs">{{ pt.distance }}KG</view>
-            <view v-else class="text-grey text-xs">{{ pt.distance }}KM</view>
-            <view class="cu-tag round bg-red lg">￥{{ pt.moneyPaotui }}</view>
+            <view v-if="item.type == 'kd'" class="text-grey text-xs">{{ item.distance }}KG</view>
+            <view v-else class="text-grey text-xs">{{ item.distance }}KM</view>
+            <view class="cu-tag round bg-red lg">￥{{ item.orderPrice }}</view>
           </view>
         </view>
       </view>
@@ -55,38 +55,36 @@
       <view class="cu-list grid" :class="['col-3']">
         <view class="cu-item" @tap="toFoodTask()">
           <view class="cuIcon-same base_fontcolor bigsize "></view>
-          <text>外卖</text>
+          <text>代取</text>
         </view>
         <view class="cu-item" @tap="toParcelTask()">
           <view class="cuIcon-deliver base_fontcolor bigsize"></view>
-          <text>快递</text>
+          <text>代寄</text>
         </view>
         <view class="cu-item" @tap="toOtherTask()">
           <view class="cuIcon-pick base_fontcolor bigsize"></view>
-          <text>其他</text>
+          <text>留言</text>
         </view>
       </view>
 
       <!-- 跑腿 -->
       <view class="cu-list menu-avatar">
-        <view class="cu-item margin-top-min" @tap="detail(pt.id, pt.type)" @longpress="jd(pt.id, pt.type)"
-          v-for="(pt, index) in taskList" :key="index">
+        <view class="cu-item margin-top-min" @tap="detail(item.id, item.type)" @longpress="jd(item.id, item.type)"
+          v-for="(item, index) in taskList" :key="index">
           <img class="avator" src="@/static/logo.png" alt="">
           <view class="content">
-            <view class="text-grey">{{ pt.name }}</view>
+            <view class="text-grey">{{ item.name }}</view>
             <view class="text-gray text-sm">
-              <view v-if="pt.type == 'kd'" class="bg-blue cu-tag">快递</view>
-              <view v-if="pt.type == 'wm'" class="bg-blue cu-tag">外卖</view>
-              <view v-if="pt.type == 'qt'" class="bg-blue cu-tag">其他</view>
+              <view v-if="item.type == 'kd'" class="bg-blue cu-tag">快递</view>
+              <view v-if="item.type == 'wm'" class="bg-blue cu-tag">外卖</view>
+              <view v-if="item.type == 'qt'" class="bg-blue cu-tag">其他</view>
               <text class="text-red  margin-right-xs margin-right"></text>
-              {{ pt.fbsj }}
+              {{ item.orderTime }}
             </view>
 
           </view>
           <view class="action">
-            <view v-if="pt.type == 'kd'" class="text-grey text-xs">{{ pt.distance }}KG</view>
-            <view v-else class="text-grey text-xs">{{ pt.distance }}KM</view>
-            <view class="cu-tag round bg-red lg">￥{{ pt.moneyPaotui }}</view>
+            <view class="cu-tag round bg-red lg">￥{{ item.orderPrice }}</view>
           </view>
         </view>
       </view>
@@ -96,6 +94,7 @@
 
 <script>
 import { getOrders } from "@/api/module/order"
+import { getAllUsers } from "@/api/module/user"
 
 export default {
   data() {
@@ -119,14 +118,11 @@ export default {
         }
       ],
       taskList: [
-        { name: "张三", type: "kd", fbsj: '2024-03-10', distance: 2, moneyPaotui: 10 },
-        { name: "张三", type: "kd", fbsj: '2024-03-10', distance: 2, moneyPaotui: 10 },
-        { name: "张三", type: "kd", fbsj: '2024-03-10', distance: 2, moneyPaotui: 10 },
+        { name: "张三", type: "kd", orderTime: '2024-03-10', distance: 2, orderPrice: 10 },
+        { name: "张三", type: "kd", orderTime: '2024-03-10', distance: 2, orderPrice: 10 },
+        { name: "张三", type: "kd", orderTime: '2024-03-10', distance: 2, orderPrice: 10 },
       ],
       myList: [],
-      timeout: 5000, // 30s
-      timeoutObj: null,
-      roleId: 1,
       userInfo: JSON.parse(userInfo)
     };
   },
@@ -143,33 +139,36 @@ export default {
     },
     // 待接单任务
     loadPtTaskList() {
-      getOrders({ orderStatus: 1 }).then(res => {
-        if (res.code == 200) {
-          this.taskList = res.data.map(item => {
-            return {
-              id: item.orderId,
-              name: item.orderUserId,
-              type: "kd",
-              fbsj: item.orderTime,
-              distance: "1",
-              moneyPaotui: item.orderPrice
-            }
-          })
-        }
+      getAllUsers().then(res => {
+        const userList = res.data
+        getOrders({ orderStatus: 1 }).then(res => {
+          if (res.code == 200) {
+            this.taskList = res.data.map(item => {
+              return {
+                id: item.orderId,
+                name: userList.find(iitem => iitem.userId == item.orderUserId)?.username,
+                type: "kd",
+                orderTime: item.orderTime,
+                distance: "1",
+                orderPrice: item.orderPrice
+              }
+            })
+          }
+        })
       })
     },
     // 我发布的未完成的任务
     getMyTaskList() {
-      getOrders({ orderUserId: this.userInfo.userId }).then(res => {
+      getOrders({ orderUserId: this.userInfo.userId, orderStatus: 2 }).then(res => {
         if (res.code == 200) {
           this.myList = res.data.map(item => {
             return {
               id: item.orderId,
               name: this.userInfo.username,
               type: "kd",
-              fbsj: item.orderTime,
+              orderTime: item.orderTime,
               distance: "1",
-              moneyPaotui: item.orderPrice
+              orderPrice: item.orderPrice
             }
           })
         }
