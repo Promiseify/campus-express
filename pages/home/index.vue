@@ -5,9 +5,9 @@
 				<view class="box">
 					<view class="box-hd">
 						<img class="avator" src="@/static/logo.png" alt="">
-						<view class="phone-number">{{ userName }}</view>
+						<view class="phone-number">{{ username }}</view>
 						<view class="item margin-top">
-							<view class="text">余额：￥{{ balance }}</view>
+							<view class="text">余额：{{ currency }} {{ balance }}</view>
 						</view>
 					</view>
 				</view>
@@ -90,16 +90,37 @@
 	</view>
 </template>
 <script>
+import { getWalletByUserId } from "@/api/module/home"
+
 export default {
 	data() {
 		return {
-			balance: 8900,
+			walletId: undefined,
+			balance: '',
+			currency: undefined,
+
 			avatar: '',
 			rz: 1,
-			userName: 'Promiseify',
-			roleId: 2
+			userId: '',
+			username: '',
+			roleId: ''
 		}
 	},
+	mounted(){
+		getWalletByUserId(this.userId).then(res => {
+			if (res.code == 200) {
+				this.balance = res.data.balance
+				this.walletId = res.data.walletId
+				this.currency = res.data.currency
+			}
+		})
+	},
+	onShow() {
+    const userInfo = JSON.parse(uni.getStorageSync("userInfo"))
+    this.userId = userInfo.userId
+    this.username = userInfo.username
+    this.roleId = userInfo.roleId
+  },
 	methods: {
 		// 用户流水
 		toLsUser() {
@@ -137,7 +158,7 @@ export default {
 				uni.removeStorageSync('userId')
 				uni.removeStorageSync('roleId')
 				uni.removeStorageSync('avatar')
-				uni.removeStorageSync('userName')
+				uni.removeStorageSync('username')
 				uni.removeStorageSync('phonenumber')
 				this.$tab.reLaunch('../login/index')
 			}).catch(err => {

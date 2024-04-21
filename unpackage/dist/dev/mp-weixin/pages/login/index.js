@@ -144,7 +144,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(uni) {
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -210,29 +210,29 @@ var _default = {
       this.queryParams.role = this.roleList[index].name;
     },
     handleLogin: function handleLogin() {
+      var _this = this;
       if (this.queryParams.username.length == 0 || this.queryParams.password.length == 0) {
-        this.$modal.showToast('请输入用户名和密码');
-        return false;
+        return this.$modal.showToast('请输入用户名和密码');
       }
-
-      // TODO
-      this.$tab.switchTab("/pages/index/index");
-      // login(this.queryParams).then(res => {
-      //   if (res.code == 200) {
-      //     //登陆成功后获取用户信息，放入storage
-      //     uni.setStroage({
-      //       key: 'userInfo',
-      //       data: JSON.stringify(res.data),
-      //       success: function () {
-      //         this.$tab.switchTab("index/index")
-      //       }
-      //     })
-      //   }
-      // })
+      (0, _auth.login)(this.queryParams).then(function (res) {
+        if (res.code == 200) {
+          //登陆成功后获取用户信息，放入storage
+          uni.setStorage({
+            key: 'userInfo',
+            data: JSON.stringify(res.data),
+            success: function success() {
+              _this.$tab.switchTab("/pages/index/index");
+            }
+          });
+        } else {
+          _this.$modal.showToast(res.msg);
+        }
+      });
     }
   }
 };
 exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 2)["default"]))
 
 /***/ }),
 

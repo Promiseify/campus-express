@@ -780,8 +780,8 @@ function populateParameters(result) {
     appVersion: "1.0.0",
     appVersionCode: "100",
     appLanguage: getAppLanguage(hostLanguage),
-    uniCompileVersion: "4.06",
-    uniRuntimeVersion: "4.06",
+    uniCompileVersion: "4.07",
+    uniRuntimeVersion: "4.07",
     uniPlatform: undefined || "mp-weixin",
     deviceBrand: deviceBrand,
     deviceModel: model,
@@ -19598,7 +19598,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.TIME_OUT = exports.API_URL = void 0;
-var API_URL = "http://localhost:9091";
+var API_URL = "http://localhost:10081";
 exports.API_URL = API_URL;
 var TIME_OUT = 10000;
 exports.TIME_OUT = TIME_OUT;
@@ -19626,6 +19626,54 @@ exports.TIME_OUT = TIME_OUT;
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "static/logo.png";
+
+/***/ }),
+/* 188 */,
+/* 189 */,
+/* 190 */
+/*!*********************************************************************************************!*\
+  !*** D:/learning/SpringBoot/graduation_project_02/campus-express/api/module/order/index.js ***!
+  \*********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ 4);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getOrders = getOrders;
+exports.issueOrder = issueOrder;
+exports.updateOrderById = updateOrderById;
+var _request = _interopRequireDefault(__webpack_require__(/*! @/api/request */ 170));
+// 发布订单
+function issueOrder(data) {
+  return (0, _request.default)({
+    url: "/order/",
+    method: 'post',
+    data: data
+  });
+}
+
+// 查询订单
+function getOrders(data) {
+  return (0, _request.default)({
+    url: "/order/match",
+    method: 'get',
+    params: data
+  });
+}
+
+// 接取订单
+function updateOrderById(data) {
+  return (0, _request.default)({
+    url: "/order/update",
+    method: 'post',
+    data: data
+  });
+}
 
 /***/ })
 ]]);

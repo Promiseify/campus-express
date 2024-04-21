@@ -141,13 +141,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-//
-//
-//
-//
-//
-//
-//
+var _auth = __webpack_require__(/*! @/api/module/auth */ 169);
 //
 //
 //
@@ -194,56 +188,62 @@ exports.default = void 0;
 var _default = {
   data: function data() {
     return {
-      windowHeight: "200px",
-      msg: '',
-      bgurl: '',
       user: {
-        roleName: '用户',
-        roleId: 116,
-        roleList: [{
-          id: 116,
-          name: '用户'
-        }, {
-          id: 117,
-          name: '跑腿员'
-        }]
-      }
+        username: '',
+        password: '',
+        roleId: 1,
+        role: '用户',
+        phone: undefined,
+        email: undefined,
+        idCard: undefined
+      },
+      roleList: [{
+        id: 1,
+        name: '用户'
+      }, {
+        id: 2,
+        name: '代取员'
+      }]
     };
   },
-  onLoad: function onLoad() {},
   methods: {
-    pickerRole: function pickerRole(e) {
+    // 选择角色
+    handlePickerRole: function handlePickerRole(e) {
       var index = e.detail.value;
-      this.user.roleId = this.user.roleList[index].id;
-      this.user.roleName = this.user.roleList[index].name;
+      this.user.roleId = this.roleList[index].id;
+      this.user.role = this.roleList[index].name;
     },
     tologin: function tologin() {
       uni.navigateTo({
         url: "../index"
       });
     },
-    register: function register() {
+    handleRegister: function handleRegister() {
       var _this = this;
-      if (this.user.loginName.length == 0 || this.user.password.length == 0) {
-        this.vusui.alert('请输入用户名和密码');
-        return false;
+      if (!this.user.username) {
+        return this.$modal.showToast('请输入用户名');
       }
-      this.http.post('/openapi/system/register', {
-        loginName: this.user.loginName,
-        userName: this.user.userName,
-        password: this.user.password,
-        email: this.user.email,
-        roleId: this.user.roleId,
-        idcardno: this.user.idcardno,
-        phonenumber: this.user.phonenumber
-      }).then(function (res) {
-        if (res.code != 0) {
-          _this.vusui.alert(res.msg);
-          return false;
+      if (!this.user.password) {
+        return this.$modal.showToast('请输入密码');
+      }
+      if (!this.user.phone) {
+        return this.$modal.showToast('请输入电话');
+      }
+      if (!this.user.email) {
+        return this.$modal.showToast('请输入邮箱');
+      }
+      if (!this.user.idCard) {
+        return this.$modal.showToast('请输入身份证');
+      }
+      (0, _auth.register)(this.user).then(function (res) {
+        if (res.code == 200) {
+          _this.$modal.msgSuccess(res.msg);
+          setTimeout(function () {
+            _this.$tab.navigateTo("../index");
+          }, 1000);
+        } else {
+          _this.$modal.showToast(res.msg);
         }
-        uni.navigateTo({
-          url: "../index"
-        });
       });
     }
   }
