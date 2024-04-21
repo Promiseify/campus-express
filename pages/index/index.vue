@@ -14,15 +14,15 @@
       <view class="cu-list grid" :class="['col-3']">
         <view class="cu-item" @tap="toFoodUserAdd()">
           <view class="cuIcon-same base_fontcolor bigsize "></view>
-          <text>外卖</text>
+          <text>代取</text>
         </view>
         <view class="cu-item" @tap="toParcelUserAdd()">
           <view class="cuIcon-deliver base_fontcolor bigsize"></view>
-          <text>快递</text>
+          <text>代寄</text>
         </view>
         <view class="cu-item" @tap="toOtherUserAdd()">
           <view class="cuIcon-pick base_fontcolor bigsize"></view>
-          <text>其他</text>
+          <text>留言</text>
         </view>
       </view>
 

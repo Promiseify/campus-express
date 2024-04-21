@@ -74,7 +74,6 @@ export default {
 		// 列表
 		getAllOrders(data) {
 			getOrders(data).then(res => {
-				console.log(res);
 				this.dataList = res.data
 			})
 		},

@@ -7,7 +7,7 @@
 						<img class="avator" src="@/static/logo.png" alt="">
 						<view class="phone-number">{{ username }}</view>
 						<view class="item margin-top">
-							<view class="text">余额：{{ currency }}{{ balance }}</view>
+							<view class="text">余额：{{ currency }} {{ balance }}</view>
 						</view>
 					</view>
 				</view>
@@ -50,19 +50,19 @@
 					<text class="text-grey">流水记录</text>
 				</view>
 			</view>
-			<view class="cu-item arrow" @tap="toMoment()">
+			<!-- <view class="cu-item arrow" @tap="toMoment()">
 				<view class="content">
 					<text class="cuIcon-emoji text-blue bigsize"></text>
 					<text class="text-grey">我的动态</text>
 				</view>
-			</view>
+			</view> -->
 
-			<view class="cu-item arrow" @tap="toMyAddress()" v-if="roleId == 1">
+			<!-- <view class="cu-item arrow" @tap="toMyAddress()" v-if="roleId == 1">
 				<view class="content">
 					<text class="cuIcon-location text-blue bigsize"></text>
 					<text class="text-grey">我的地址</text>
 				</view>
-			</view>
+			</view> -->
 
 			<view class="cu-item" v-if="roleId == 2">
 				<view class="content">
