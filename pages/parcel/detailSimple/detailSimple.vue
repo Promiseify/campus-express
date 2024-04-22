@@ -55,10 +55,9 @@
 </template>
 
 <script>
-import { getOrders, updateOrderById  } from "@/api/module/order"
-
+import { getOrders, updateOrderById } from "@/api/module/order"
+import { increaseWallet } from "@/api/module/wallet"
 export default {
-
 	data() {
 		const userInfo = uni.getStorageSync("userInfo")
 		return {
@@ -126,9 +125,16 @@ export default {
 			}).then(res => {
 				if (res.code == 200) {
 					this.$modal.showToast("接取成功，请按照规定时间送达！")
-					setTimeout(() => {
-						this.$tab.switchTab("/pages/index/index")
-					}, 1000);
+					increaseWallet({
+						userId: this.userInfo.userId,
+						amount: this.obj.money
+					}).then(res => {
+						if (res.code == 200) {
+							setTimeout(() => {
+								this.$tab.switchTab("/pages/index/index")
+							}, 1000);
+						}
+					})
 				}
 			})
 		}

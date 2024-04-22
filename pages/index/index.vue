@@ -43,8 +43,9 @@
 
           </view>
           <view class="action">
-            <view v-if="item.type == 'kd'" class="text-grey text-xs">{{ item.distance }}KG</view>
-            <view v-else class="text-grey text-xs">{{ item.distance }}KM</view>
+            <!-- <view v-if="item.type == 'kd'" class="text-grey text-xs">{{ item.distance }}KG</view> -->
+            <!-- <view v-else class="text-grey text-xs">{{ item.distance }}KM</view> -->
+            <view class="text-grey">{{ getStatus(item.orderStatus) }}</view>
             <view class="cu-tag round bg-red lg">￥{{ item.orderPrice }}</view>
           </view>
         </view>
@@ -84,6 +85,7 @@
 
           </view>
           <view class="action">
+            <view class="text-grey">{{ getStatus(item.orderStatus) }}</view>
             <view class="cu-tag round bg-red lg">￥{{ item.orderPrice }}</view>
           </view>
         </view>
@@ -95,7 +97,6 @@
 <script>
 import { getOrders } from "@/api/module/order"
 import { getAllUsers } from "@/api/module/user"
-
 export default {
   data() {
     const userInfo = uni.getStorageSync("userInfo")
@@ -149,8 +150,9 @@ export default {
                 name: userList.find(iitem => iitem.userId == item.orderUserId)?.username,
                 type: "kd",
                 orderTime: item.orderTime,
-                distance: "1",
-                orderPrice: item.orderPrice
+                // distance: "1",
+                orderPrice: item.orderPrice,
+                orderStatus: item.orderStatus
               }
             })
           }
@@ -159,20 +161,44 @@ export default {
     },
     // 我发布的未完成的任务
     getMyTaskList() {
-      getOrders({ orderUserId: this.userInfo.userId, orderStatus: 2 }).then(res => {
+      getOrders({ orderUserId: this.userInfo.userId }).then(res => {
         if (res.code == 200) {
-          this.myList = res.data.map(item => {
+          this.myList = res.data.filter(item => item.orderStatus !== 3).map(item => {
             return {
               id: item.orderId,
               name: this.userInfo.username,
               type: "kd",
               orderTime: item.orderTime,
-              distance: "1",
-              orderPrice: item.orderPrice
+              orderPrice: item.orderPrice,
+              orderStatus: item.orderStatus
             }
           })
         }
       })
+    },
+    getStatus(status) {
+      switch (status) {
+        case 1:
+          return "待接单"
+        case 2:
+          return "派送中"
+        case 3:
+          return "派送完成"
+        default:
+          break;
+      }
+    },
+    getTypes(type) {
+      switch (type) {
+        case 1:
+          return "外卖"
+        case 2:
+          return "快递"
+        case 3:
+          return "药品"
+        default:
+          break;
+      }
     },
     detail(id, type) {
       var url;
