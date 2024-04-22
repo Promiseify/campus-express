@@ -57,6 +57,8 @@
 <script>
 import { getOrders, updateOrderById } from "@/api/module/order"
 import { increaseWallet } from "@/api/module/wallet"
+import { getCourierById } from "@/api/module/courier"
+
 export default {
 	data() {
 		const userInfo = uni.getStorageSync("userInfo")
@@ -66,19 +68,6 @@ export default {
 				username: '',
 				address: '',
 				phone: '',
-				// pty: {},
-				// address: {
-				// 	content: "宿舍楼一号",
-				// 	phone: "1821773009"
-				// },
-				// id: '',
-				// num: 123456,
-				// place: "东门",
-				// code: 1234556,
-				// remark: "有些重",
-				// fbsj: "2024-03-10",
-				// weight: "30kg",
-				// money: 100
 			}
 		}
 	},
@@ -91,6 +80,14 @@ export default {
 		this.getOrdersFn(options.id)
 		this.obj.num = options.id
 		this.obj.code = options.id
+	},
+	onShow() {
+		// 获取快递员身份
+		getCourierById({ userId: this.userInfo.userId }).then(res => {
+			const info = res.data[0]
+			this.courierId = info.courierId
+			this.review = info.review
+		})
 	},
 	methods: {
 		getOrdersFn(orderId) {
@@ -118,6 +115,10 @@ export default {
 			})
 		},
 		handleReceive() {
+			if (this.review !== "审核通过") {
+				return this.$modal.showToast("请先进行骑手认证审核！")
+			}
+
 			updateOrderById({
 				orderId: this.obj.id,
 				orderManId: this.userInfo.userId,
@@ -125,16 +126,9 @@ export default {
 			}).then(res => {
 				if (res.code == 200) {
 					this.$modal.showToast("接取成功，请按照规定时间送达！")
-					increaseWallet({
-						userId: this.userInfo.userId,
-						amount: this.obj.money
-					}).then(res => {
-						if (res.code == 200) {
-							setTimeout(() => {
-								this.$tab.switchTab("/pages/index/index")
-							}, 1000);
-						}
-					})
+					setTimeout(() => {
+						this.$tab.switchTab("/pages/index/index")
+					}, 1000);
 				}
 			})
 		}

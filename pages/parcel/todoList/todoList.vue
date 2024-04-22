@@ -47,10 +47,13 @@
 <script>
 import { getOrders, updateOrderById } from "@/api/module/order"
 import { increaseWallet } from "@/api/module/wallet"
+import { getCourierById } from "@/api/module/courier"
 
 export default {
 	data() {
 		const userInfo = JSON.parse(uni.getStorageSync("userInfo"))
+
+		console.log(userInfo);
 		return {
 			list: [{
 				name: '全部'
@@ -61,14 +64,21 @@ export default {
 			}],
 			current: 0, // tabs组件的current值，表示当前活动的tab选项
 			dataList: [],
+			courierId: undefined,
+			review: undefined,
 			userInfo
 		}
-	},
-	created() {
 	},
 	onShow() {
 		this.getAllOrders({
 			orderStatus: 1
+		})
+
+		// 获取快递员身份
+		getCourierById({ userId: this.userInfo.userId }).then(res => {
+			const info = res.data[0]
+			this.courierId = info.courierId
+			this.review = info.review
 		})
 	},
 	methods: {
@@ -112,6 +122,10 @@ export default {
 		// 接单
 		receive(item) {
 			this.$modal.confirm("您确定要接取订单吗？").then(() => {
+				if (this.review !== "审核通过") {
+					return this.$modal.showToast("请先进行骑手认证！")
+				}
+
 				updateOrderById({
 					orderId: item.orderId,
 					orderManId: this.userInfo.userId,
@@ -129,7 +143,7 @@ export default {
 				})
 			})
 		},
-		cancel(id) {
+		cancel(item) {
 			updateOrderById({
 				orderId: item.orderId,
 				orderManId: null,

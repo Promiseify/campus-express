@@ -142,7 +142,7 @@ export default {
     loadPtTaskList() {
       getAllUsers().then(res => {
         const userList = res.data
-        getOrders({ orderStatus: 1 }).then(res => {
+        getOrders({ orderStatus: 1, review: "审核完成" }).then(res => {
           if (res.code == 200) {
             this.taskList = res.data.map(item => {
               return {
