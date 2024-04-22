@@ -9,6 +9,9 @@
 						<view class="item margin-top">
 							<view class="text">余额：{{ currency }} {{ balance }}</view>
 						</view>
+						<view class="control">
+							<button size="mini" type="warn" @click="handleRecharge">充值</button>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -86,13 +89,24 @@
 		<view class="padding flex flex-direction" @tap="logout()">
 			<button class="cu-btn bg-red margin-tb-sm lg">退出</button>
 		</view>
-
-
+		<u-modal title="请输入充值金额" :closeOnClickOverlay="true" :show="showAmount" :showCancelButton="true"
+			@cancel="showAmount = false" @close="showAmount = false" @confirm="recharge">
+			<view class="slot-content">
+				<uni-easyinput type="number" v-model="amount" placeholder="请输入充值金额" />
+			</view>
+		</u-modal>
+		<u-modal title="请输入支付密码" :closeOnClickOverlay="true" :show="showPassword" :showCancelButton="true"
+			@cancel="cancelPay" @close="cancelPay" @confirm="payConfirm">
+			<view class="slot-content">
+				<uni-easyinput type="password" v-model="password" placeholder="请输入支付密码" />
+			</view>
+		</u-modal>
 	</view>
 </template>
 <script>
 import { getWalletByUserId } from "@/api/module/home"
 import { getCourierById, updateCourierById } from "@/api/module/courier"
+import { increaseWallet } from "@/api/module/wallet"
 
 export default {
 	data() {
@@ -106,7 +120,11 @@ export default {
 			review: undefined,
 			userId: '',
 			username: '',
-			roleId: ''
+			roleId: '',
+			amount: undefined,
+			showAmount: false,
+			showPassword: false,
+			password: undefined
 		}
 	},
 	onShow() {
@@ -167,7 +185,6 @@ export default {
 			})
 		},
 		logout() {
-			var that = this
 			this.$modal.confirm('您确定要退出登陆吗？').then(() => {
 				uni.removeStorageSync('token')
 				uni.removeStorageSync('userId')
@@ -178,6 +195,45 @@ export default {
 				this.$tab.reLaunch('../login/index')
 			}).catch(err => {
 
+			})
+		},
+		handleRecharge() {
+			this.amount = null
+			this.password = null
+			this.showAmount = true
+		},
+		recharge() {
+			if (!this.amount) {
+				return this.$modal.showToast("请输入充值金额！")
+			}
+			this.showAmount = false
+			this.showPassword = true
+		},
+		cancelPay() {
+			this.showPassword = false
+			this.$modal.showToast("充值失败！")
+		},
+		payConfirm() {
+			if (!this.password) {
+				return this.$modal.showToast("请输入密码！")
+			}
+			this.showPassword = false
+			// 钱包减掉对应额度
+			increaseWallet({
+				userId: this.userId,
+				amount: this.amount
+			}).then(res => {
+				if (res.code == 200) {
+					this.$modal.showToast("充值成功")
+
+					getWalletByUserId(this.userId).then(res => {
+						if (res.code == 200) {
+							this.balance = res.data.balance
+							this.walletId = res.data.walletId
+							this.currency = res.data.currency
+						}
+					})
+				}
 			})
 		},
 		handleRole() {
@@ -256,6 +312,7 @@ page {
 }
 
 .box {
+
 	width: 650upx;
 	height: 290upx;
 	border-radius: 20upx;
@@ -264,6 +321,8 @@ page {
 	box-shadow: 0 5upx 20upx 0upx rgba(0, 0, 150, .2);
 
 	.box-hd {
+		position: relative;
+
 		display: flex;
 		flex-wrap: wrap;
 		flex-direction: row;
@@ -288,6 +347,12 @@ page {
 		.phone-number {
 			width: 100%;
 			text-align: center;
+		}
+
+		.control {
+			position: absolute;
+			bottom: -10px;
+			right: 30px;
 		}
 	}
 
