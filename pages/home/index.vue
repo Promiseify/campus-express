@@ -64,14 +64,15 @@
 				</view>
 			</view> -->
 
-			<view class="cu-item" v-if="roleId == 2">
+			<view class="cu-item" v-if="roleId == 2" @click="handleRole">
 				<view class="content">
 					<text class="cuIcon-people text-blue bigsize"></text>
 					<text class="text-grey">骑手认证</text>
 				</view>
-				<text class="action" v-if="rz == 0">未认证</text>
-				<text class="action" v-if="rz == 1">已通过</text>
-				<text class="action" v-if="rz == 2">未通过</text>
+				<text class="action">{{ review }}</text>
+				<!-- <text class="action" v-if="review == 0">未认证</text>
+				<text class="action" v-if="review == 1">已通过</text>
+				<text class="action" v-if="review == 2">未通过</text> -->
 			</view>
 
 			<view class="cu-item arrow" @tap="toUpdatePassword()">
@@ -91,6 +92,7 @@
 </template>
 <script>
 import { getWalletByUserId } from "@/api/module/home"
+import { getCourierById, updateCourierById } from "@/api/module/courier"
 
 export default {
 	data() {
@@ -100,7 +102,8 @@ export default {
 			currency: undefined,
 
 			avatar: '',
-			rz: 1,
+			courierId: undefined,
+			review: undefined,
 			userId: '',
 			username: '',
 			roleId: ''
@@ -119,6 +122,16 @@ export default {
 				this.currency = res.data.currency
 			}
 		})
+
+		if (this.roleId == 2) {
+			getCourierById({
+				userId: this.userId
+			}).then(res => {
+				const info = res.data[0]
+				this.courierId = info.courierId
+				this.review = info.review
+			})
+		}
 	},
 	methods: {
 		// 用户流水
@@ -139,7 +152,7 @@ export default {
 		toMyAddress() {
 			uni.navigateTo({
 				url: '../address/address'
-				
+
 			})
 		},
 		// 我的订单-用户
@@ -165,6 +178,36 @@ export default {
 				this.$tab.reLaunch('../login/index')
 			}).catch(err => {
 
+			})
+		},
+		handleRole() {
+			// 先重新获取一下
+			getCourierById({
+				userId: this.userId
+			}).then(res => {
+				const info = res.data[0]
+				this.courierId = info.courierId
+				this.review = info.review
+
+				if (this.review == "审核通过") {
+					return this.$modal.showToast("您已经通过审核认证！")
+				} else if (this.review == "未审核") {
+					return this.$modal.confirm("是否确认提交个人身份信息，进行认证审核？").then(res => {
+						updateCourierById({
+							courierId: this.courierId,
+							review: "审核中"
+						}).then(res => {
+							if (res.code == 200) {
+								this.review = "审核中"
+								return this.$modal.showToast("审核提交成功！")
+							}
+						})
+					})
+				} else if (this.review == "审核中") {
+					return this.$modal.showToast("您的提交正在审核")
+				} else if (this.review == "审核未通过") {
+					return this.$modal.showToast("您的审核未通过!")
+				}
 			})
 		},
 		// 进入我的资料界面
