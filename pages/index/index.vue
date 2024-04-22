@@ -268,9 +268,9 @@ export default {
 
     // 普通用户- 进入外卖添加页面
     toFoodUserAdd() {
-      uni.navigateTo({
-        url: '../taskfood/userAdd/userAdd'
-      })
+      // uni.navigateTo({
+      //   url: '../taskfood/userAdd/userAdd'
+      // })
     },
     // 普通用户- 进入快递添加页面
     toParcelUserAdd() {
@@ -280,15 +280,15 @@ export default {
     },
     // 普通用户- 进入其他添加页面
     toOtherUserAdd() {
-      uni.navigateTo({
-        url: '../taskother/userAdd/userAdd'
-      })
+      // uni.navigateTo({
+      //   url: '../taskother/userAdd/userAdd'
+      // })
     },
     // 跑腿员- 进入外卖所有待接单列表界面
     toFoodTask() {
-      uni.navigateTo({
-        url: '../food/todoList/todoList'
-      })
+      // uni.navigateTo({
+      //   url: '../food/todoList/todoList'
+      // })
     },
     // 跑腿员- 进入快递所有待接单列表界面
     toParcelTask() {
@@ -298,9 +298,9 @@ export default {
     },
     // 跑腿员- 进入其他所有待接单列表界面
     toOtherTask() {
-      uni.navigateTo({
-        url: '../other/todoList/todoList'
-      })
+      // uni.navigateTo({
+      //   url: '../other/todoList/todoList'
+      // })
     }
 
   }
