@@ -1,17 +1,59 @@
 <template>
   <view class="wrapper">
-    issue
+    <view class="content">
+      <view class="text">
+        <u--textarea v-model="content" placeholder="请输入留言内容"></u--textarea>
+      </view>
+      <button class="button" size="default" type="primary" @click="handleIssue">留言反馈</button>
+    </view>
   </view>
 </template>
 
 <script>
+import { createFeedback } from "@/api/module/feedback"
 export default {
   data() {
+    const userInfo = JSON.parse(uni.getStorageSync("userInfo"))
     return {
+      content: '',
+      userInfo
+    }
+  },
+  methods: {
+    handleIssue() {
+      if (!this.content) {
+        return this.$modal.showToast("请输入要反馈的内容")
+      }
 
+      this.$modal.loading("发表中...")
+      this.$modal.hideLoading()
+
+      createFeedback({
+        userId: this.userInfo.userId,
+        feedbackContent: this.content,
+        feedbackStatus: "待处理",
+        feedbackType: 1,
+        feedbackTime: new Date().getTime() + (8 * 3600 * 1000)
+      }).then(res => {
+        if (res.code == 200) {
+          this.$modal.showToast("发表成功！")
+
+          setTimeout(() => {
+            this.$tab.switchTab("/pages/index/index")
+          }, 1000);
+        }
+      })
     }
   },
 }
 </script>
-<style></style>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.content {
+  margin: 10px 20px;
+}
+
+.content .text {
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+</style>

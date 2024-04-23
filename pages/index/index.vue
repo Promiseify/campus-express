@@ -11,16 +11,12 @@
     </view>
     <template v-if="userInfo.roleId == 1">
       <!-- 用户 -->
-      <view class="cu-list grid" :class="['col-3']">
-        <view class="cu-item" @tap="toFoodUserAdd()">
-          <view class="cuIcon-same base_fontcolor bigsize "></view>
-          <text>代取</text>
-        </view>
+      <view class="cu-list grid" :class="['col-2']">
         <view class="cu-item" @tap="toParcelUserAdd()">
           <view class="cuIcon-deliver base_fontcolor bigsize"></view>
           <text>代寄</text>
         </view>
-        <view class="cu-item" @tap="toOtherUserAdd()">
+        <view class="cu-item" @tap="toIssue()">
           <view class="cuIcon-pick base_fontcolor bigsize"></view>
           <text>留言</text>
         </view>
@@ -53,16 +49,12 @@
     </template>
     <template v-if="userInfo.roleId == 2">
       <!-- 跑腿 -->
-      <view class="cu-list grid" :class="['col-3']">
-        <view class="cu-item" @tap="toFoodTask()">
-          <view class="cuIcon-same base_fontcolor bigsize "></view>
-          <text>代取</text>
-        </view>
+      <view class="cu-list grid" :class="['col-2']">
         <view class="cu-item" @tap="toParcelTask()">
           <view class="cuIcon-deliver base_fontcolor bigsize"></view>
-          <text>代寄</text>
+          <text>代取</text>
         </view>
-        <view class="cu-item" @tap="toOtherTask()">
+        <view class="cu-item" @tap="toIssue()">
           <view class="cuIcon-pick base_fontcolor bigsize"></view>
           <text>留言</text>
         </view>
@@ -70,8 +62,8 @@
 
       <!-- 跑腿 -->
       <view class="cu-list menu-avatar">
-        <view class="cu-item margin-top-min" @tap="detail(item.id, item.type)" @longpress="jd(item.id, item.type)"
-          v-for="(item, index) in taskList" :key="index">
+        <view class="cu-item margin-top-min" @tap="detail(item.id, item.type)" v-for="(item, index) in taskList"
+          :key="index">
           <img class="avator" src="@/static/logo.png" alt="">
           <view class="content">
             <view class="text-grey">{{ item.name }}</view>
@@ -238,34 +230,6 @@ export default {
         url: url
       })
     },
-    // 接单
-    jd(id, type) {
-      var url;
-      if (type == 'wm') {
-        url = `/openapi/food/pty/jd/${id}`
-      } else if (type == 'kd') {
-        url = `/openapi/parcel/pty/jd/${id}`
-      } else if (type == 'qt') {
-        url = `/openapi/other/pty/jd/${id}`
-      }
-      var that = this
-      this.vusui.confirm('您确定要接单吗？', {
-        icon: 1
-      }, function () {
-        that.vusui.load(3)
-        that.http.post(url).then((res) => {
-          that.vusui.close("loading")
-          if (res.code != 0) {
-            that.vusui.alert(res.msg)
-            return false
-          } else {
-            that.vusui.alert('操作成功')
-            that.loadPtTaskList();
-          }
-        })
-      })
-    },
-
     // 普通用户- 进入外卖添加页面
     toFoodUserAdd() {
       // uni.navigateTo({
@@ -280,9 +244,9 @@ export default {
     },
     // 普通用户- 进入其他添加页面
     toOtherUserAdd() {
-      // uni.navigateTo({
-      //   url: '../taskother/userAdd/userAdd'
-      // })
+      uni.navigateTo({
+        url: '../taskother/userAdd/userAdd'
+      })
     },
     // 跑腿员- 进入外卖所有待接单列表界面
     toFoodTask() {
@@ -301,6 +265,11 @@ export default {
       // uni.navigateTo({
       //   url: '../other/todoList/todoList'
       // })
+    },
+    toIssue() {
+      uni.navigateTo({
+        url: '/pages/issue/index'
+      })
     }
 
   }
