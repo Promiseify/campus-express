@@ -56,10 +56,9 @@
 			<!-- <view class="cu-item arrow" @tap="toMoment()">
 				<view class="content">
 					<text class="cuIcon-emoji text-blue bigsize"></text>
-					<text class="text-grey">我的动态</text>
+					<text class="text-grey">我的发表</text>
 				</view>
 			</view> -->
-
 			<!-- <view class="cu-item arrow" @tap="toMyAddress()" v-if="roleId == 1">
 				<view class="content">
 					<text class="cuIcon-location text-blue bigsize"></text>
@@ -73,9 +72,13 @@
 					<text class="text-grey">骑手认证</text>
 				</view>
 				<text class="action">{{ review }}</text>
-				<!-- <text class="action" v-if="review == 0">未认证</text>
-				<text class="action" v-if="review == 1">已通过</text>
-				<text class="action" v-if="review == 2">未通过</text> -->
+			</view>
+
+			<view class="cu-item arrow" @tap="toMessage()">
+				<view class="content">
+					<text class="cuIcon-emoji text-blue bigsize"></text>
+					<text class="text-grey">我的反馈</text>
+				</view>
 			</view>
 
 			<view class="cu-item arrow" @tap="toUpdatePassword()">
@@ -282,6 +285,12 @@ export default {
 		toMoment() {
 			uni.navigateTo({
 				url: 'moment/moment'
+			})
+		},
+		// 进入反馈页面
+		toMessage() {
+			uni.navigateTo({
+				url: 'message/message'
 			})
 		}
 	}

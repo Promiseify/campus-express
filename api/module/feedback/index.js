@@ -8,3 +8,17 @@ export function createFeedback(data) {
     data: data
   })
 }
+
+export function getFeedbackById(data) {
+  return request({
+    url: "/feedback/" + data,
+    method: 'get'
+  })
+}
+
+export function deleteFeedback(data) {
+  return request({
+    url: "/feedback/" + data,
+    method: 'delete'
+  })
+}

@@ -56,6 +56,13 @@
 			}
 		},
 		{
+			"path": "pages/home/message/message",
+			"style": {
+				"navigationBarTitleText": "我的反馈",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/home/moment/momentAdd/momentAdd",
 			"style": {
 				"navigationBarTitleText": "发表心情",
