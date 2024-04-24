@@ -43,6 +43,18 @@
 					<view class="title">价格</view>
 					<input v-model="obj.money"></input>
 				</view>
+				<view class="cu-form-group">
+					<view class="title">审核状态</view>
+					<input v-model="obj.review"></input>
+				</view>
+				<view class="cu-form-group">
+					<view class="title">快递信息图片</view>
+					<view class="album">
+						<view class="album__content">
+							<u-album :urls="[obj.imageUrl]" keyName="src2"></u-album>
+						</view>
+					</view>
+				</view>
 				<view class="padding flex flex-direction">
 					<button @click="handleReceive" class="cu-btn bg-blue margin-tb-sm lg">接 取</button>
 				</view>
@@ -102,6 +114,8 @@ export default {
 					this.obj.money = data.orderPrice
 					this.obj.status = data.orderStatus
 					this.obj.userManId = data.orderManId
+					this.obj.imageUrl = data.imageUrl
+					this.obj.review = data.review
 				}
 			})
 		},
@@ -135,3 +149,20 @@ export default {
 	}
 }
 </script>
+<style lang="scss">
+.album {
+	display: flex;
+	align-items: flex-start;
+
+	.album__avatar {
+		background-color: #ddd;;
+		padding: 5px;
+		border-radius: 3px;
+	}
+
+	.album__content {
+		margin-left: 10px;
+		flex: 1;
+	}
+}
+</style>

@@ -14,7 +14,7 @@
 				<uni-forms-item label="酬金" name="orderPrice" required>
 					<uni-easyinput type="text" v-model="order.orderPrice" placeholder="请输入酬金" />
 				</uni-forms-item>
-				<uni-forms-item label="备注说明" name="orderRemark">
+				<uni-forms-item label="备注说明(大小、重量)" name="orderRemark">
 					<uni-easyinput type="text" v-model="order.orderRemark" placeholder="请输入备注" />
 				</uni-forms-item>
 				<uni-forms-item label="快递截图" name="images" required>
