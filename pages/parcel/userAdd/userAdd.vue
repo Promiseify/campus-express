@@ -17,6 +17,9 @@
 				<uni-forms-item label="备注说明(大小、重量)" name="orderRemark">
 					<uni-easyinput type="text" v-model="order.orderRemark" placeholder="请输入备注" />
 				</uni-forms-item>
+				<uni-forms-item label="易碎品" name="fragile" required>
+					<uni-data-select v-model="order.fragile" :localdata="fragileList" placeholder="请选择是否是易碎品"></uni-data-select>
+				</uni-forms-item>
 				<uni-forms-item label="快递截图" name="images" required>
 					<u-upload :fileList="fileList" @afterRead="afterRead" @delete="deletePic" name="file" :maxCount="1"
 						:previewFullImage="true"></u-upload>
@@ -60,7 +63,8 @@ export default {
 				orderUserId: JSON.parse(userInfo)?.userId,
 				images: undefined,
 				imageUrl: undefined,
-				review: undefined
+				review: undefined,
+				fragile: undefined
 			},
 			show: false,
 			rules: {
@@ -93,9 +97,19 @@ export default {
 						required: true,
 						errorMessage: '快递截图不能为空'
 					}]
+				},
+				fragile: {
+					rules: [{
+						required: true,
+						errorMessage: '易碎品属性不能为空'
+					}]
 				}
 			},
-			fileList: []
+			fileList: [],
+			fragileList: [
+				{ value: "是", text: "是" },
+				{ value: "否", text: "否" },
+			]
 		}
 	},
 	methods: {

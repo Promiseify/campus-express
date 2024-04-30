@@ -54,6 +54,11 @@
 					</view>
 
 					<view class="cu-form-group">
+						<view class="title">易碎品</view>
+						<input v-model="obj.fragile"></input>
+					</view>
+
+					<view class="cu-form-group">
 						<view class="title">完成时间</view>
 						<input v-model="obj.wcsj"></input>
 					</view>
@@ -120,7 +125,8 @@ export default {
 				remark: '',
 				address: '',
 				phone: '',
-				userManId: ''
+				userManId: '',
+				fragile: ''
 			},
 			message: {
 				utype: ''
@@ -143,8 +149,7 @@ export default {
 			getOrders({ orderId: orderId }).then(res => {
 				if (res.code == 200) {
 					const data = res.data[0]
-					console.log(data);
-					
+
 					this.obj.place = data.orderPlace
 					this.obj.remark = data.orderRemark
 					this.obj.fbsj = data.orderTime
@@ -153,6 +158,7 @@ export default {
 					this.obj.money = data.orderPrice
 					this.obj.status = data.orderStatus
 					this.obj.userManId = data.orderManId
+					this.obj.fragile = data.fragile
 				}
 			})
 		},

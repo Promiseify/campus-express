@@ -26,16 +26,30 @@
 						</view>
 					</view>
 				</view>
-				<view class="control">
+				<view class="control" v-if="item.orderStatus !== 3">
 					<u-button type="warning" size="mini" shape="circle" @tap="cancel(item.orderId)">取消订单</u-button>
+				</view>
+				<view class="control" v-if="item.orderStatus === 3">
+					<u-button type="success" size="mini" shape="circle" @tap="evaluate(item.orderId)">评价代取员</u-button>
 				</view>
 			</view>
 		</view>
+
+		<uni-popup ref="popup" :mask-click="false">
+			<uni-popup-dialog ref="dialog" mode="input" :before-close="true" title="订单评价" @close="closePopup"
+				@confirm="submitForm">
+				<uni-forms :modelValue="popupForm" label-width="88px">
+					<uni-forms-item label="代取员评分" name="name">
+						<uni-rate v-model="popupForm.orderManEvaluate" />
+					</uni-forms-item>
+				</uni-forms>
+			</uni-popup-dialog>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
-import { getOrders, deleteOrderById } from "@/api/module/order"
+import { getOrders, deleteOrderById, updateOrderById } from "@/api/module/order"
 
 export default {
 
@@ -53,7 +67,11 @@ export default {
 			}],
 			current: 0, // tabs组件的current值，表示当前活动的tab选项
 			dataList: [],
-			userInfo
+			userInfo,
+			popupForm: {
+				orderId: undefined,
+				orderManEvaluate: undefined
+			}
 		}
 	},
 	created() {
@@ -127,6 +145,19 @@ export default {
 						}, 1000);
 					}
 				})
+			})
+		},
+		evaluate(id) {
+			this.popupForm.orderId = id
+			this.$refs.popup.open('center')
+		},
+		closePopup() {
+			this.$refs.popup.close()
+		},
+		submitForm() {
+			updateOrderById(this.popupForm).then(res => {
+				this.$modal.showToast("评分成功")
+				this.closePopup()
 			})
 		}
 	}
