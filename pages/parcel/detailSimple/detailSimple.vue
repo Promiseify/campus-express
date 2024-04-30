@@ -48,6 +48,10 @@
 					<input v-model="obj.review"></input>
 				</view>
 				<view class="cu-form-group">
+					<view class="title">易碎品</view>
+					<input v-model="obj.fragile"></input>
+				</view>
+				<view class="cu-form-group">
 					<view class="title">快递信息图片</view>
 					<view class="album">
 						<view class="album__content">
@@ -116,6 +120,8 @@ export default {
 					this.obj.userManId = data.orderManId
 					this.obj.imageUrl = data.imageUrl
 					this.obj.review = data.review
+					this.obj.fragile = data.fragile
+					
 				}
 			})
 		},
