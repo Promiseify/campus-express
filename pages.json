@@ -63,6 +63,13 @@
 			}
 		},
 		{
+			"path": "pages/home/review/review",
+			"style": {
+				"navigationBarTitleText": "审核中心",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
 			"path": "pages/home/moment/momentAdd/momentAdd",
 			"style": {
 				"navigationBarTitleText": "发表心情",

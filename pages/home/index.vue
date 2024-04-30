@@ -252,15 +252,16 @@ export default {
 					return this.$modal.showToast("您已经通过审核认证！")
 				} else if (this.review == "未审核") {
 					return this.$modal.confirm("是否确认提交个人身份信息，进行认证审核？").then(res => {
-						updateCourierById({
-							courierId: this.courierId,
-							review: "审核中"
-						}).then(res => {
-							if (res.code == 200) {
-								this.review = "审核中"
-								return this.$modal.showToast("审核提交成功！")
-							}
-						})
+						this.$tab.navigateTo("./review/review")
+						// updateCourierById({
+						// 	courierId: this.courierId,
+						// 	review: "审核中"
+						// }).then(res => {
+						// 	if (res.code == 200) {
+						// 		this.review = "审核中"
+						// 		return this.$modal.showToast("审核提交成功！")
+						// 	}
+						// })
 					})
 				} else if (this.review == "审核中") {
 					return this.$modal.showToast("您的提交正在审核")

@@ -15,8 +15,8 @@
 			</view>
 
 			<view class="cu-form-group ">
-				<view class="title">身份证</view>
-				<input placeholder="请输入身份证" v-model="user.idCard"></input>
+				<view class="title">学生证</view>
+				<input placeholder="请输入学生证" v-model="user.studentNumber"></input>
 			</view>
 
 			<view class="cu-form-group ">
@@ -53,7 +53,7 @@ export default {
 				role: '用户',
 				phone: undefined,
 				email: undefined,
-				idCard: undefined
+				studentNumber: undefined
 			},
 			roleList: [
 				{ id: 1, name: '用户' },
@@ -92,8 +92,8 @@ export default {
 				return this.$modal.showToast('请输入邮箱')
 			}
 
-			if (!this.user.idCard) {
-				return this.$modal.showToast('请输入身份证')
+			if (!this.user.studentNumber) {
+				return this.$modal.showToast('请输入学生证')
 			}
 
 			register(this.user).then(res => {
