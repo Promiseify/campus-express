@@ -20,6 +20,20 @@ export default {
     }
   },
   methods: {
+    formatDateTime(date) {
+      var y = date.getFullYear();
+      var m = date.getMonth() + 1;
+      m = m < 10 ? ('0' + m) : m;
+      var d = date.getDate();
+      d = d < 10 ? ('0' + d) : d;
+      var h = date.getHours();
+      h = h < 10 ? ('0' + h) : h;
+      var minute = date.getMinutes();
+      minute = minute < 10 ? ('0' + minute) : minute;
+      var second = date.getSeconds();
+      second = second < 10 ? ('0' + second) : second;
+      return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+    },
     handleIssue() {
       if (!this.content) {
         return this.$modal.showToast("请输入要反馈的内容")
@@ -33,7 +47,7 @@ export default {
         feedbackContent: this.content,
         feedbackStatus: "待处理",
         feedbackType: 1,
-        feedbackTime: new Date().getTime() + (8 * 3600 * 1000)
+        feedbackTime: this.formatDateTime(new Date())
       }).then(res => {
         if (res.code == 200) {
           this.$modal.showToast("发表成功！")
